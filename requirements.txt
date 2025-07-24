@@ -1,0 +1,22 @@
+fastapi
+uvicorn
+langchain
+streamlit
+pandas
+python-dotenv
+httpx
+tweepy
+gspread
+google-auth
+pyairtable
+apscheduler
+slowapi
+openai
+requests
+pytest
+langchain_groq 
+fastapi-users[sqlalchemy]
+python-jose
+passlib
+bcrypt
+# For authentication and user management 

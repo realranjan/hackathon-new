@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  backend:
+    build: .
+    container_name: supplywhiz-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:///./test.db
+      - JWT_SECRET=supersecret
+      - TRACCAR_API=http://traccar:8082/api
+      - TRACCAR_TOKEN=${TRACCAR_TOKEN}
+      - NOTIFY_CHANNELS=email,slack
+      - NOTIFY_EMAIL=your@email.com
+      - SLACK_TOKEN=${SLACK_TOKEN}
+      - SLACK_CHANNEL=#your-channel
+      - TWILIO_SID=${TWILIO_SID}
+      - TWILIO_TOKEN=${TWILIO_TOKEN}
+      - TWILIO_FROM=${TWILIO_FROM}
+      - NOTIFY_PHONE=${NOTIFY_PHONE}
+    volumes:
+      - ./data:/app/data
+      - ./alerts.json:/app/alerts.json
+    depends_on:
+      - traccar
+  frontend:
+    build: .
+    container_name: supplywhiz-frontend
+    command: streamlit run frontend/app.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./frontend:/frontend
+      - ./data:/app/data
+    depends_on:
+      - backend
+  traccar:
+    image: traccar/traccar:latest
+    container_name: traccar
+    ports:
+      - "8082:8082"
+    environment:
+      - TRACCAR_WEB_PORT=8082
+    volumes:
+      - traccar-data:/opt/traccar/data
+volumes:
+  traccar-data: 

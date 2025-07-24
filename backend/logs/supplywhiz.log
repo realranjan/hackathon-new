@@ -1,0 +1,178 @@
+{"time": "2025-07-24 12:40:03,511", "level": "INFO", "module": "base", "funcName": "add_job", "lineno": "507", "message": "Adding job tentatively -- it will be properly scheduled when the scheduler starts"}
+{"time": "2025-07-24 12:40:03,512", "level": "INFO", "module": "base", "funcName": "_real_add_job", "lineno": "1090", "message": "Added job "periodic_disruption_check" to job store "default""}
+{"time": "2025-07-24 12:40:03,512", "level": "INFO", "module": "base", "funcName": "start", "lineno": "214", "message": "Scheduler started"}
+{"time": "2025-07-24 12:40:15,409", "level": "INFO", "module": "base", "funcName": "add_job", "lineno": "507", "message": "Adding job tentatively -- it will be properly scheduled when the scheduler starts"}
+{"time": "2025-07-24 12:40:15,410", "level": "INFO", "module": "base", "funcName": "_real_add_job", "lineno": "1090", "message": "Added job "periodic_disruption_check" to job store "default""}
+{"time": "2025-07-24 12:40:15,411", "level": "INFO", "module": "base", "funcName": "start", "lineno": "214", "message": "Scheduler started"}
+{"time": "2025-07-24 12:53:42,547", "level": "INFO", "module": "base", "funcName": "add_job", "lineno": "507", "message": "Adding job tentatively -- it will be properly scheduled when the scheduler starts"}
+{"time": "2025-07-24 12:53:42,549", "level": "INFO", "module": "base", "funcName": "_real_add_job", "lineno": "1090", "message": "Added job "periodic_disruption_check" to job store "default""}
+{"time": "2025-07-24 12:53:42,549", "level": "INFO", "module": "base", "funcName": "start", "lineno": "214", "message": "Scheduler started"}
+{"time": "2025-07-24 12:54:36,543", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1740", "message": "HTTP Request: GET http://api.aviationstack.com/v1/flights?access_key=90a463c4008f5a76cb74863110a7a599&arr_icao=VIDP&limit=5 "HTTP/1.1 200 OK""}
+{"time": "2025-07-24 12:54:36,545", "level": "INFO", "module": "event_monitor", "funcName": "fetch_air_events", "lineno": "153", "message": "AviationStack air events found: 0"}
+{"time": "2025-07-24 12:54:36,550", "level": "WARNING", "module": "event_monitor", "funcName": "fetch_sea_events", "lineno": "164", "message": "Missing MYSHIPTRACKING_KEY."}
+{"time": "2025-07-24 12:54:37,505", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1740", "message": "HTTP Request: GET https://newsapi.org/v2/top-headlines?apiKey=083b0a2f206e4270b787f992358ccbf5&q=strike+OR+port+closure+OR+disaster+OR+protest+OR+shutdown+OR+instability+OR+earthquake+OR+flood+OR+hurricane&language=en&pageSize=5&country=in "HTTP/1.1 200 OK""}
+{"time": "2025-07-24 12:54:37,507", "level": "INFO", "module": "event_monitor", "funcName": "fetch_news_events", "lineno": "51", "message": "NewsAPI events found: 0"}
+{"time": "2025-07-24 12:54:38,205", "level": "ERROR", "module": "event_monitor", "funcName": "fetch_twitter_events", "lineno": "113", "message": "Twitter fetch failed: 403 Forbidden
+453 - You currently have access to a subset of X API V2 endpoints and limited v1.1 endpoints (e.g. media post, oauth) only. If you need access to this endpoint, you may need a different access level. You can learn more here: https://developer.x.com/en/portal/product"}
+{"time": "2025-07-24 12:54:38,207", "level": "INFO", "module": "event_monitor", "funcName": "fetch_or_simulate_events", "lineno": "237", "message": "No real events found, using simulation."}
+{"time": "2025-07-24 12:56:29,824", "level": "INFO", "module": "base", "funcName": "add_job", "lineno": "507", "message": "Adding job tentatively -- it will be properly scheduled when the scheduler starts"}
+{"time": "2025-07-24 12:56:29,825", "level": "INFO", "module": "base", "funcName": "_real_add_job", "lineno": "1090", "message": "Added job "periodic_disruption_check" to job store "default""}
+{"time": "2025-07-24 12:56:29,826", "level": "INFO", "module": "base", "funcName": "start", "lineno": "214", "message": "Scheduler started"}
+{"time": "2025-07-24 12:57:23,215", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1740", "message": "HTTP Request: GET http://api.aviationstack.com/v1/flights?access_key=90a463c4008f5a76cb74863110a7a599&arr_icao=VIDP&limit=5 "HTTP/1.1 200 OK""}
+{"time": "2025-07-24 12:57:23,217", "level": "INFO", "module": "event_monitor", "funcName": "fetch_air_events", "lineno": "153", "message": "AviationStack air events found: 0"}
+{"time": "2025-07-24 12:57:23,222", "level": "WARNING", "module": "event_monitor", "funcName": "fetch_sea_events", "lineno": "164", "message": "Missing MYSHIPTRACKING_KEY."}
+{"time": "2025-07-24 12:57:23,907", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1740", "message": "HTTP Request: GET https://newsapi.org/v2/top-headlines?apiKey=083b0a2f206e4270b787f992358ccbf5&q=strike+OR+port+closure+OR+disaster+OR+protest+OR+shutdown+OR+instability+OR+earthquake+OR+flood+OR+hurricane&language=en&pageSize=5&country=in "HTTP/1.1 200 OK""}
+{"time": "2025-07-24 12:57:23,910", "level": "INFO", "module": "event_monitor", "funcName": "fetch_news_events", "lineno": "51", "message": "NewsAPI events found: 0"}
+{"time": "2025-07-24 12:57:24,556", "level": "ERROR", "module": "event_monitor", "funcName": "fetch_twitter_events", "lineno": "113", "message": "Twitter fetch failed: 403 Forbidden
+453 - You currently have access to a subset of X API V2 endpoints and limited v1.1 endpoints (e.g. media post, oauth) only. If you need access to this endpoint, you may need a different access level. You can learn more here: https://developer.x.com/en/portal/product"}
+{"time": "2025-07-24 12:57:24,558", "level": "INFO", "module": "event_monitor", "funcName": "fetch_or_simulate_events", "lineno": "237", "message": "No real events found, using simulation."}
+{"time": "2025-07-24 13:02:18,853", "level": "INFO", "module": "base", "funcName": "add_job", "lineno": "507", "message": "Adding job tentatively -- it will be properly scheduled when the scheduler starts"}
+{"time": "2025-07-24 13:02:18,855", "level": "INFO", "module": "base", "funcName": "_real_add_job", "lineno": "1090", "message": "Added job "periodic_disruption_check" to job store "default""}
+{"time": "2025-07-24 13:02:18,855", "level": "INFO", "module": "base", "funcName": "start", "lineno": "214", "message": "Scheduler started"}
+{"time": "2025-07-24 13:02:18,895", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "11", "message": "Request: POST http://test/auth/register"}
+{"time": "2025-07-24 13:02:18,911", "level": "WARNING", "module": "bcrypt", "funcName": "_load_backend_mixin", "lineno": "622", "message": "(trapped) error reading bcrypt version"}
+Traceback (most recent call last):
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+AttributeError: module 'bcrypt' has no attribute '__about__'
+{"time": "2025-07-24 13:02:19,330", "level": "ERROR", "module": "middleware", "funcName": "dispatch", "lineno": "17", "message": "Exception: (1045, "Access denied for user 'root'@'localhost' (using password: YES)")
+Traceback (most recent call last):
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\middleware\base.py", line 151, in call_next
+    message = await recv_stream.receive()
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\anyio\streams\memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\personel projects\hackathon_project_multiagent_suppply vhain analysis\backend\middleware.py", line 13, in dispatch
+    response = await call_next(request)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\middleware\base.py", line 159, in call_next
+    raise app_exc
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\fastapi\routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\fastapi\routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+  File "C:\personel projects\hackathon_project_multiagent_suppply vhain analysis\backend\auth.py", line 42, in register_user
+    pool = await get_mysql_pool()
+  File "C:\personel projects\hackathon_project_multiagent_suppply vhain analysis\backend\db.py", line 15, in get_mysql_pool
+    return await aiomysql.create_pool(
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\aiomysql\pool.py", line 29, in _create_pool
+    await pool._fill_free_pool(False)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\aiomysql\pool.py", line 182, in _fill_free_pool
+    conn = await connect(echo=self._echo, loop=self._loop,
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\aiomysql\connection.py", line 75, in _connect
+    await conn._connect()
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\aiomysql\connection.py", line 540, in _connect
+    await self._request_authentication()
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\aiomysql\connection.py", line 865, in _request_authentication
+    await self.caching_sha2_password_auth(auth_packet)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\aiomysql\connection.py", line 989, in caching_sha2_password_auth
+    pkt = await self._read_packet()
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\aiomysql\connection.py", line 652, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1045, "Access denied for user 'root'@'localhost' (using password: YES)")
+"}
+{"time": "2025-07-24 13:02:19,332", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1740", "message": "HTTP Request: POST http://test/auth/register "HTTP/1.1 500 Internal Server Error""}
+{"time": "2025-07-24 13:07:46,482", "level": "INFO", "module": "base", "funcName": "add_job", "lineno": "507", "message": "Adding job tentatively -- it will be properly scheduled when the scheduler starts"}
+{"time": "2025-07-24 13:07:46,483", "level": "INFO", "module": "base", "funcName": "_real_add_job", "lineno": "1090", "message": "Added job "periodic_disruption_check" to job store "default""}
+{"time": "2025-07-24 13:07:46,483", "level": "INFO", "module": "base", "funcName": "start", "lineno": "214", "message": "Scheduler started"}
+{"time": "2025-07-24 13:07:46,507", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "11", "message": "Request: POST http://test/auth/register"}
+{"time": "2025-07-24 13:07:46,519", "level": "WARNING", "module": "bcrypt", "funcName": "_load_backend_mixin", "lineno": "622", "message": "(trapped) error reading bcrypt version"}
+Traceback (most recent call last):
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+AttributeError: module 'bcrypt' has no attribute '__about__'
+{"time": "2025-07-24 13:07:46,784", "level": "ERROR", "module": "middleware", "funcName": "dispatch", "lineno": "17", "message": "Exception: (1045, "Access denied for user 'root'@'localhost' (using password: YES)")
+Traceback (most recent call last):
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\middleware\base.py", line 151, in call_next
+    message = await recv_stream.receive()
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\anyio\streams\memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\personel projects\hackathon_project_multiagent_suppply vhain analysis\backend\middleware.py", line 13, in dispatch
+    response = await call_next(request)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\middleware\base.py", line 159, in call_next
+    raise app_exc
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\fastapi\routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\fastapi\routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+  File "C:\personel projects\hackathon_project_multiagent_suppply vhain analysis\backend\auth.py", line 42, in register_user
+    pool = await get_mysql_pool()
+  File "C:\personel projects\hackathon_project_multiagent_suppply vhain analysis\backend\db.py", line 15, in get_mysql_pool
+    return await aiomysql.create_pool(
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\aiomysql\pool.py", line 29, in _create_pool
+    await pool._fill_free_pool(False)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\aiomysql\pool.py", line 182, in _fill_free_pool
+    conn = await connect(echo=self._echo, loop=self._loop,
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\aiomysql\connection.py", line 75, in _connect
+    await conn._connect()
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\aiomysql\connection.py", line 540, in _connect
+    await self._request_authentication()
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\aiomysql\connection.py", line 865, in _request_authentication
+    await self.caching_sha2_password_auth(auth_packet)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\aiomysql\connection.py", line 989, in caching_sha2_password_auth
+    pkt = await self._read_packet()
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\aiomysql\connection.py", line 652, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\ranja\AppData\Local\Programs\Python\Python310\lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1045, "Access denied for user 'root'@'localhost' (using password: YES)")
+"}
+{"time": "2025-07-24 13:07:46,785", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1740", "message": "HTTP Request: POST http://test/auth/register "HTTP/1.1 500 Internal Server Error""}
