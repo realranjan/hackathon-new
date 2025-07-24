@@ -4864,3 +4864,207 @@ Traceback (most recent call last):
 UnboundLocalError: local variable 'os' referenced before assignment
 {"time": "2025-07-25 02:12:13,874", "level": "ERROR", "module": "scheduler", "funcName": "periodic_disruption_check", "lineno": "48", "message": "Error in periodic_disruption_check: local variable 'os' referenced before assignment"}
 {"time": "2025-07-25 02:12:13,874", "level": "INFO", "module": "base", "funcName": "run_job", "lineno": "156", "message": "Job "periodic_disruption_check (trigger: interval[0:10:00], next run at: 2025-07-25 02:22:09 IST)" executed successfully"}
+{"time": "2025-07-25 02:22:09,986", "level": "INFO", "module": "base", "funcName": "run_job", "lineno": "129", "message": "Running job "periodic_disruption_check (trigger: interval[0:10:00], next run at: 2025-07-25 02:32:09 IST)" (scheduled at 2025-07-25 02:22:09.984768+05:30)"}
+{"time": "2025-07-25 02:22:10,870", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1740", "message": "HTTP Request: GET http://api.aviationstack.com/v1/flights?access_key=90a463c4008f5a76cb74863110a7a599&arr_icao=VIDP&limit=5 "HTTP/1.1 200 OK""}
+{"time": "2025-07-25 02:22:10,872", "level": "INFO", "module": "event_monitor", "funcName": "fetch_air_events", "lineno": "165", "message": "AviationStack air events found: 0"}
+{"time": "2025-07-25 02:22:11,690", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1740", "message": "HTTP Request: GET https://api.myshiptracking.com/v1/ships?key=K6dhrB4RApmmjzhdEgW2lMWnHGf1wIJ7YV&country=CN&limit=5 "HTTP/1.1 404 Not Found""}
+{"time": "2025-07-25 02:22:11,692", "level": "WARNING", "module": "event_monitor", "funcName": "fetch_sea_events", "lineno": "209", "message": "MyShipTracking error: 404 <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 - Page Not Found | MyShipTracking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    /* Reset and full height */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    /* Dark blue gradient background */
+    body {
+      background: linear-gradient(135deg, #001f3f, #004080);
+      color: #ffffff;
+      font-family: 'Roboto', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+    }
+    .container {
+      max-width: 500px;
+      width: 100%;
+    }
+    header img {
+      max-width: 100px;
+      width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 4rem;
+      margin: 0;
+      font-weight: 300;
+    }
+    p {
+      font-size: 1.2rem;
+      margin: 20px 0;
+      font-weight: 300;
+      line-height: 1.4;
+    }
+    a {
+      display: inline-block;
+      text-decoration: none;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      padding: 10px 30px;
+      border-radius: 30px;
+      transition: background 0.3s, color 0.3s;
+      font-weight: 300;
+      font-size: 1rem;
+      margin-top: 30px;
+    }
+    a:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .footer {
+      margin-top: 40px;
+      font-size: 0.8rem;
+      font-weight: 300;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="myst.svg" alt="MyShipTracking Logo">
+    </header>
+    <h1>404</h1>
+    <p>Oops, the page you're looking for doesn't exist</p>
+    <a href="/">Back to Home</a>
+    <div class="footer">
+      <p>&copy; 2025 MyShipTracking</p>
+    </div>
+  </div>
+</body>
+</html>
+"}
+{"time": "2025-07-25 02:22:12,782", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1740", "message": "HTTP Request: GET https://newsapi.org/v2/top-headlines?apiKey=083b0a2f206e4270b787f992358ccbf5&q=strike+OR+port+closure+OR+disaster+OR+protest+OR+shutdown+OR+instability+OR+earthquake+OR+flood+OR+hurricane&language=en&pageSize=5&country=in "HTTP/1.1 200 OK""}
+{"time": "2025-07-25 02:22:12,784", "level": "INFO", "module": "event_monitor", "funcName": "fetch_news_events", "lineno": "58", "message": "NewsAPI events found: 0"}
+{"time": "2025-07-25 02:22:13,758", "level": "ERROR", "module": "event_monitor", "funcName": "fetch_twitter_events", "lineno": "125", "message": "Twitter fetch failed: 403 Forbidden
+453 - You currently have access to a subset of X API V2 endpoints and limited v1.1 endpoints (e.g. media post, oauth) only. If you need access to this endpoint, you may need a different access level. You can learn more here: https://developer.x.com/en/portal/product"}
+{"time": "2025-07-25 02:22:13,759", "level": "INFO", "module": "event_monitor", "funcName": "fetch_or_simulate_events", "lineno": "248", "message": "No real events found, using simulation."}
+{"time": "2025-07-25 02:22:13,761", "level": "INFO", "module": "risk_analyzer", "funcName": "wrapper", "lineno": "115", "message": "[ENTER] analyze_risk args=({'location': 'Nagpur', 'event_type': 'Flood', 'severity': 'High', 'timestamp': '2025-07-24T20:52:13.761804', 'source': 'Simulated', 'mode': 'road', 'data_source': 'simulated'},) kwargs={}"}
+{"time": "2025-07-25 02:22:13,763", "level": "ERROR", "module": "risk_analyzer", "funcName": "wrapper", "lineno": "123", "message": "[ERROR] analyze_risk exception: local variable 'os' referenced before assignment"}
+Traceback (most recent call last):
+  File "C:\personel projects\hackathon_project_multiagent_suppply vhain analysis\backend\agents\risk_analyzer.py", line 118, in wrapper
+    result = func(*args, **kwargs)
+  File "C:\personel projects\hackathon_project_multiagent_suppply vhain analysis\backend\agents\risk_analyzer.py", line 139, in analyze_risk
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+UnboundLocalError: local variable 'os' referenced before assignment
+{"time": "2025-07-25 02:22:13,764", "level": "ERROR", "module": "scheduler", "funcName": "periodic_disruption_check", "lineno": "48", "message": "Error in periodic_disruption_check: local variable 'os' referenced before assignment"}
+{"time": "2025-07-25 02:22:13,765", "level": "INFO", "module": "base", "funcName": "run_job", "lineno": "156", "message": "Job "periodic_disruption_check (trigger: interval[0:10:00], next run at: 2025-07-25 02:32:09 IST)" executed successfully"}
+{"time": "2025-07-25 02:32:09,987", "level": "INFO", "module": "base", "funcName": "run_job", "lineno": "129", "message": "Running job "periodic_disruption_check (trigger: interval[0:10:00], next run at: 2025-07-25 02:42:09 IST)" (scheduled at 2025-07-25 02:32:09.984768+05:30)"}
+{"time": "2025-07-25 02:32:10,957", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1740", "message": "HTTP Request: GET http://api.aviationstack.com/v1/flights?access_key=90a463c4008f5a76cb74863110a7a599&arr_icao=VIDP&limit=5 "HTTP/1.1 200 OK""}
+{"time": "2025-07-25 02:32:10,963", "level": "INFO", "module": "event_monitor", "funcName": "fetch_air_events", "lineno": "165", "message": "AviationStack air events found: 0"}
+{"time": "2025-07-25 02:32:11,747", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1740", "message": "HTTP Request: GET https://api.myshiptracking.com/v1/ships?key=K6dhrB4RApmmjzhdEgW2lMWnHGf1wIJ7YV&country=CN&limit=5 "HTTP/1.1 404 Not Found""}
+{"time": "2025-07-25 02:32:11,749", "level": "WARNING", "module": "event_monitor", "funcName": "fetch_sea_events", "lineno": "209", "message": "MyShipTracking error: 404 <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 - Page Not Found | MyShipTracking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    /* Reset and full height */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    /* Dark blue gradient background */
+    body {
+      background: linear-gradient(135deg, #001f3f, #004080);
+      color: #ffffff;
+      font-family: 'Roboto', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+    }
+    .container {
+      max-width: 500px;
+      width: 100%;
+    }
+    header img {
+      max-width: 100px;
+      width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 4rem;
+      margin: 0;
+      font-weight: 300;
+    }
+    p {
+      font-size: 1.2rem;
+      margin: 20px 0;
+      font-weight: 300;
+      line-height: 1.4;
+    }
+    a {
+      display: inline-block;
+      text-decoration: none;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      padding: 10px 30px;
+      border-radius: 30px;
+      transition: background 0.3s, color 0.3s;
+      font-weight: 300;
+      font-size: 1rem;
+      margin-top: 30px;
+    }
+    a:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .footer {
+      margin-top: 40px;
+      font-size: 0.8rem;
+      font-weight: 300;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="myst.svg" alt="MyShipTracking Logo">
+    </header>
+    <h1>404</h1>
+    <p>Oops, the page you're looking for doesn't exist</p>
+    <a href="/">Back to Home</a>
+    <div class="footer">
+      <p>&copy; 2025 MyShipTracking</p>
+    </div>
+  </div>
+</body>
+</html>
+"}
+{"time": "2025-07-25 02:32:12,178", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1740", "message": "HTTP Request: GET https://newsapi.org/v2/top-headlines?apiKey=083b0a2f206e4270b787f992358ccbf5&q=strike+OR+port+closure+OR+disaster+OR+protest+OR+shutdown+OR+instability+OR+earthquake+OR+flood+OR+hurricane&language=en&pageSize=5&country=in "HTTP/1.1 200 OK""}
+{"time": "2025-07-25 02:32:12,180", "level": "INFO", "module": "event_monitor", "funcName": "fetch_news_events", "lineno": "58", "message": "NewsAPI events found: 0"}
+{"time": "2025-07-25 02:32:13,089", "level": "ERROR", "module": "event_monitor", "funcName": "fetch_twitter_events", "lineno": "125", "message": "Twitter fetch failed: 403 Forbidden
+453 - You currently have access to a subset of X API V2 endpoints and limited v1.1 endpoints (e.g. media post, oauth) only. If you need access to this endpoint, you may need a different access level. You can learn more here: https://developer.x.com/en/portal/product"}
+{"time": "2025-07-25 02:32:13,090", "level": "INFO", "module": "event_monitor", "funcName": "fetch_or_simulate_events", "lineno": "248", "message": "No real events found, using simulation."}
+{"time": "2025-07-25 02:32:13,092", "level": "INFO", "module": "risk_analyzer", "funcName": "wrapper", "lineno": "115", "message": "[ENTER] analyze_risk args=({'location': 'Raipur', 'event_type': 'Flood', 'severity': 'Medium', 'timestamp': '2025-07-24T21:02:13.091536', 'source': 'Simulated', 'mode': 'road', 'data_source': 'simulated'},) kwargs={}"}
+{"time": "2025-07-25 02:32:13,093", "level": "ERROR", "module": "risk_analyzer", "funcName": "wrapper", "lineno": "123", "message": "[ERROR] analyze_risk exception: local variable 'os' referenced before assignment"}
+Traceback (most recent call last):
+  File "C:\personel projects\hackathon_project_multiagent_suppply vhain analysis\backend\agents\risk_analyzer.py", line 118, in wrapper
+    result = func(*args, **kwargs)
+  File "C:\personel projects\hackathon_project_multiagent_suppply vhain analysis\backend\agents\risk_analyzer.py", line 139, in analyze_risk
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+UnboundLocalError: local variable 'os' referenced before assignment
+{"time": "2025-07-25 02:32:13,093", "level": "ERROR", "module": "scheduler", "funcName": "periodic_disruption_check", "lineno": "48", "message": "Error in periodic_disruption_check: local variable 'os' referenced before assignment"}
+{"time": "2025-07-25 02:32:13,095", "level": "INFO", "module": "base", "funcName": "run_job", "lineno": "156", "message": "Job "periodic_disruption_check (trigger: interval[0:10:00], next run at: 2025-07-25 02:42:09 IST)" executed successfully"}
