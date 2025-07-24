@@ -33,7 +33,7 @@ def get_latest_gps_position(device_id):
             lat, lon = data[0]['latitude'], data[0]['longitude']
             return lat, lon
     except Exception as e:
-        print(f"Traccar GPS fetch failed: {e}")
+        logging.error(f"Traccar GPS fetch failed: {e}")
     return None, None
 
 # Example: update_shipment_location_by_gps(product_id, lat, lon)
@@ -59,7 +59,7 @@ def update_shipment_location_by_gps(product_id, lat, lon, inventory_path="data/i
             json.dump(inventory, f, indent=2)
         return city
     except Exception as e:
-        print(f"Failed to update shipment location by GPS: {e}")
+        logging.error(f"Failed to update shipment location by GPS: {e}")
         return None
 
 # --- Provider-Agnostic Location Fetching ---
@@ -84,11 +84,11 @@ def get_latest_location_from_provider(product_id, provider, provider_id=None, **
                 lat, lon = loc["latitude"], loc["longitude"]
                 return lat, lon
         except Exception as e:
-            print(f"project44 location fetch failed: {e}")
+            logging.error(f"project44 location fetch failed: {e}")
         return None, None
     # Add more providers here (FourKites, DHL, etc.)
     else:
-        print(f"Provider {provider} not supported.")
+        logging.warning(f"Provider {provider} not supported.")
         return None, None
 
 def load_inventory(path="data/inventory.json", use_gsheet=False, gsheet_id=None, worksheet_name="Sheet1"):
@@ -106,7 +106,7 @@ def load_inventory(path="data/inventory.json", use_gsheet=False, gsheet_id=None,
             records = worksheet.get_all_records()
             return records
         except Exception as e:
-            print(f"Google Sheets load failed: {e}, falling back to local JSON.")
+            logging.error(f"Google Sheets load failed: {e}, falling back to local JSON.")
     if not os.path.exists(path):
         logging.warning(f"Inventory file not found: {path}")
         return []
@@ -122,7 +122,7 @@ def load_vendors(path="data/vendors.csv", use_airtable=False, airtable_api_key=N
             # Flatten AirTable records
             return [rec['fields'] for rec in records]
         except Exception as e:
-            print(f"AirTable load failed: {e}, falling back to local CSV.")
+            logging.error(f"AirTable load failed: {e}, falling back to local CSV.")
     if not os.path.exists(path):
         logging.warning(f"Vendors file not found: {path}")
         return []

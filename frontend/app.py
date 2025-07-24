@@ -8,6 +8,93 @@ import plotly.graph_objects as go
 
 st.title("SupplyWhiz Dashboard")
 
+API_BASE = "http://localhost:8000"
+
+# --- Authentication ---
+def login(email, password):
+    resp = requests.post(f"{API_BASE}/auth/login", json={"email": email, "password": password})
+    if resp.status_code == 200:
+        data = resp.json()
+        st.session_state["jwt"] = data["access_token"]
+        st.session_state["user"] = {
+            "email": data["email"],
+            "role": data["role"],
+            "is_active": data["is_active"],
+            "is_superuser": data["is_superuser"],
+            "is_verified": data["is_verified"]
+        }
+        return True
+    else:
+        st.error(resp.json().get("detail", "Login failed"))
+        return False
+
+def register(email, password, role):
+    resp = requests.post(f"{API_BASE}/auth/register", json={"email": email, "password": password, "role": role})
+    if resp.status_code == 200 and resp.json().get("message") == "User registered":
+        st.success("Registration successful! Please log in.")
+        return True
+    else:
+        st.error(resp.json().get("message", "Registration failed"))
+        return False
+
+def api_request(method, endpoint, **kwargs):
+    headers = kwargs.pop("headers", {})
+    if "jwt" in st.session_state:
+        headers["Authorization"] = f"Bearer {st.session_state['jwt']}"
+    resp = requests.request(method, f"{API_BASE}{endpoint}", headers=headers, **kwargs)
+    if resp.status_code in (401, 403):
+        user = st.session_state.get("user", {})
+        if user.get("role") == "admin" or user.get("is_superuser"):
+            st.warning("Admin session: backend returned 401/403, but you remain logged in. Check backend logs or token.")
+        else:
+            st.warning("Session expired or unauthorized. Please log in again.")
+            st.session_state.clear()
+    return resp
+
+# --- Auth UI ---
+if "jwt" not in st.session_state or "user" not in st.session_state:
+    st.header("Login or Register")
+    tab1, tab2 = st.tabs(["Login", "Register"])
+    with tab1:
+        email = st.text_input("Email", key="login_email")
+        password = st.text_input("Password", type="password", key="login_pass")
+        if st.button("Login"):
+            if login(email, password):
+                st.success("Login successful")
+    with tab2:
+        email = st.text_input("Email", key="reg_email")
+        password = st.text_input("Password", type="password", key="reg_pass")
+        role = st.selectbox("Role", ["admin", "operator", "viewer"], key="reg_role")
+        if st.button("Register"):
+            register(email, password, role)
+    st.stop()
+
+user = st.session_state["user"]
+st.success(f"Logged in as {user['email']} ({user['role']})")
+if st.button("Logout"):
+    st.session_state.clear()
+    st.success("Logged out")
+
+# --- Password Change UI ---
+st.header("Change Password")
+if st.button("Show Password Change Form"):
+    with st.form("change_password_form"):
+        old_password = st.text_input("Old Password", type="password", key="old_pass")
+        new_password = st.text_input("New Password", type="password", key="new_pass")
+        submit = st.form_submit_button("Change Password")
+        if submit:
+            resp = api_request("POST", "/auth/change_password", json={"old_password": old_password, "new_password": new_password})
+            if resp.status_code == 200:
+                st.success("Password changed successfully.")
+            else:
+                st.error(resp.json().get("detail", "Password change failed."))
+
+# --- Role-based feature display ---
+role = user["role"]
+is_admin = role == "admin" or user.get("is_superuser")
+is_operator = role == "operator" or is_admin
+is_viewer = role == "viewer" or is_operator or is_admin
+
 # Simple geocoding for demo locations
 LOCATION_COORDS = {
     "Bangalore Port": {"lat": 12.95, "lon": 77.7},
@@ -24,8 +111,19 @@ if st.button("Simulate Disruption: Strike at Bangalore Port"):
         "timestamp": "2024-06-01T12:00:00Z",
         "source": "Simulated"
     }
-    response = requests.post("http://localhost:8000/simulate_event/", json=event)
-    st.success("Disruption simulated!")
+    response = api_request("POST", "/simulate_disruptions/", json=[event])
+    if response.status_code == 200:
+        st.success("Disruption simulated!")
+        # Fetch latest alerts and auto-generate GenAI plan
+        alerts = requests.get("http://localhost:8000/alerts/").json().get("alerts", [])
+        if alerts:
+            latest_risk_report = alerts[-1].get("risk_report", [])
+            with st.spinner("Getting GenAI plan for latest disruption..."):
+                resp = api_request("POST", "/genai_plan/", json=latest_risk_report)
+            st.header("GenAI Action Plan (Latest Disruption)")
+            st.json(resp.json())
+    else:
+        st.error(response.json().get("detail", "Simulation failed."))
 
 st.header("Real-Time Alerts")
 # Throttle alert fetching to once every 10 seconds
@@ -101,8 +199,11 @@ if all_shipments:
     new_status = st.selectbox("Status", ["in_transit", "rerouted", "delayed", "delivered"])
     if st.button("Update Shipment"):
         update = {"product_id": product_id, "current_location": new_location, "status": new_status}
-        response = requests.post("http://localhost:8000/update_shipment/", json=update)
-        st.write(response.json())
+        response = api_request("POST", "/update_shipment/", json=update)
+        if response.status_code == 200:
+            st.write(response.json())
+        else:
+            st.error(response.json().get("detail", "Update failed."))
 else:
     st.info("No shipments available to update yet.")
 
@@ -115,8 +216,16 @@ disruptions_json = st.text_area("Paste disruptions as JSON array", value=example
 if st.button("Simulate Disruptions"):
     try:
         disruptions = json.loads(disruptions_json)
-        response = requests.post("http://localhost:8000/simulate_disruptions/", json=disruptions)
+        response = api_request("POST", "/simulate_disruptions/", json=disruptions)
         st.json(response.json())
+        # Fetch latest alerts and auto-generate GenAI plan
+        alerts = requests.get("http://localhost:8000/alerts/").json().get("alerts", [])
+        if alerts:
+            latest_risk_report = alerts[-1].get("risk_report", [])
+            with st.spinner("Getting GenAI plan for latest disruption..."):
+                resp = api_request("POST", "/genai_plan/", json=latest_risk_report)
+            st.header("GenAI Action Plan (Latest Disruption)")
+            st.json(resp.json())
     except Exception as e:
         st.error(f"Invalid JSON or API error: {e}")
 
@@ -141,8 +250,11 @@ if all_shipments:
     if st.button("Run Scenario: Move and Disrupt"):
         # 1. Update shipment location
         update = {"product_id": scenario_product, "current_location": new_scenario_location, "status": "in_transit"}
-        update_resp = requests.post("http://localhost:8000/update_shipment/", json=update)
-        st.write("Shipment updated:", update_resp.json())
+        update_resp = api_request("POST", "/update_shipment/", json=update)
+        if update_resp.status_code == 200:
+            st.write("Shipment updated:", update_resp.json())
+        else:
+            st.error(update_resp.json().get("detail", "Update failed."))
         # 2. Simulate disruption at new location
         disruption = [{
             "location": new_scenario_location,
@@ -152,8 +264,11 @@ if all_shipments:
             "source": "Simulated",
             "mode": "road"
         }]
-        sim_resp = requests.post("http://localhost:8000/simulate_disruptions/", json=disruption)
-        st.write("Disruption simulated:", sim_resp.json())
+        sim_resp = api_request("POST", "/simulate_disruptions/", json=disruption)
+        if sim_resp.status_code == 200:
+            st.write("Disruption simulated:", sim_resp.json())
+        else:
+            st.error(sim_resp.json().get("detail", "Simulation failed."))
 
 # --- Escalation Dashboard ---
 st.header("🚨 Escalation Dashboard")
@@ -248,4 +363,87 @@ try:
         else:
             st.markdown(f"No legs data for {item['product_id']}.")
 except Exception as e:
-    st.info(f"Could not load inventory for timeline chart: {e}") 
+    st.info(f"Could not load inventory for timeline chart: {e}")
+
+# --- Admin: User Management ---
+if is_admin:
+    st.header("User Management (Admin Only)")
+    search = st.text_input("Search users by email", key="user_search")
+    page = st.number_input("Page", min_value=1, value=1, step=1, key="user_page")
+    page_size = st.selectbox("Page Size", [10, 20, 50, 100], index=1, key="user_page_size")
+    if st.button("List Users"):
+        with st.spinner("Fetching users..."):
+            params = {"page": page, "page_size": page_size}
+            if search:
+                params["search"] = search
+            resp = api_request("GET", "/admin/users/", params=params)
+        if resp.status_code == 200:
+            data = resp.json()
+            users = data.get("users", [])
+            total = data.get("total", 0)
+            st.write(f"Total users: {total} | Page {data.get('page', 1)} | Page size: {data.get('page_size', page_size)}")
+            for u in users:
+                st.write(u)
+                if st.button(f"Delete User {u['id']}", key=f"del_{u['id']}"):
+                    if st.confirm(f"Are you sure you want to delete user {u['email']}?"):
+                        with st.spinner("Deleting user..."):
+                            del_resp = api_request("POST", "/admin/user/delete/", json={"user_id": u["id"]})
+                        if del_resp.status_code == 200:
+                            st.success(f"User {u['email']} deleted.")
+                        else:
+                            st.error(del_resp.json().get("detail", "Delete failed."))
+        else:
+            st.error("Failed to fetch users.")
+    st.markdown("---")
+
+# --- Operator/Admin: Update Shipment via GPS ---
+if is_operator:
+    st.header("Update Shipment via GPS (Operator Only)")
+    product_id = st.text_input("Product ID for GPS Update", key="gps_pid")
+    device_id = st.text_input("Device ID", key="gps_did")
+    if st.button("Update via GPS"):
+        with st.spinner("Updating via GPS..."):
+            payload = {"product_id": product_id, "device_id": device_id}
+            resp = api_request("POST", "/update_shipment_gps/", json=payload)
+        if resp.status_code == 200:
+            st.write(resp.json())
+        else:
+            st.error(resp.json().get("detail", "GPS update failed."))
+    st.markdown("---")
+
+# --- Operator/Admin: Update Shipment via Provider ---
+if is_operator:
+    st.header("Update Shipment via Provider (Operator Only)")
+    product_id = st.text_input("Product ID for Provider Update", key="prov_pid")
+    provider = st.text_input("Provider Name", key="prov_name")
+    provider_id = st.text_input("Provider ID", key="prov_id")
+    if st.button("Update via Provider"):
+        with st.spinner("Updating via provider..."):
+            payload = {"product_id": product_id, "provider": provider, "provider_id": provider_id}
+            resp = api_request("POST", "/update_shipment_provider/", json=payload)
+        if resp.status_code == 200:
+            st.write(resp.json())
+        else:
+            st.error(resp.json().get("detail", "Provider update failed."))
+    st.markdown("---")
+
+# --- Notification/Audit Log (if available) ---
+if is_admin:
+    st.header("Notification & Audit Log (Admin Only)")
+    resp = api_request("GET", "/admin/audit_log/")
+    if resp.status_code == 200:
+        logs = resp.json().get("logs", [])
+        for log in logs:
+            st.write(log)
+    else:
+        st.info("No audit log endpoint or failed to fetch logs.")
+    st.markdown("---")
+
+# --- Backend Health Check ---
+st.header("Backend Health Status")
+resp = api_request("GET", "/healthz")
+if resp.status_code == 200:
+    st.success(f"Backend status: {resp.json().get('status')}")
+else:
+    st.error("Backend health check failed.")
+st.markdown("---") 

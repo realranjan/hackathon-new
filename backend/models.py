@@ -62,4 +62,4 @@ class GenAIPlanRequest(BaseModel):
     risk_report: List[Dict[str, Any]]
 
 class GenAIPlanResponse(BaseModel):
-    action_plan: Dict[str, Any] 
+    action_plan: list 

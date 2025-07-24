@@ -2,6 +2,12 @@ import pandas as pd
 import json
 import os
 import logging
+from langchain_groq import ChatGroq
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
+from dotenv import load_dotenv
+load_dotenv()
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 # To use Google Sheets for inventory or Airtable for vendors, import and use the load_inventory/load_vendors functions from utils.data_loader.py
 # Example (uncomment and configure as needed):
@@ -27,8 +33,8 @@ def calculate_risk_score(severity, criticality):
 
 def analyze_risk(disruptions, inventory_path="data/inventory.json", vendors_path="data/vendors.csv"):
     """
-    disruptions: list of event_payload dicts (can also accept a single dict for backward compatibility)
-    Returns a list of risk reports, one per affected shipment/disruption pair, with deduplication, escalation, predictive ETA, and cost impact logic.
+    Use LLM to calculate risk for each shipment/disruption pair. No manual if/else logic.
+    For every disruption, match all shipments whose route, current_location, or any leg matches the disruption location.
     """
     if not isinstance(disruptions, list):
         disruptions = [disruptions]
@@ -38,100 +44,84 @@ def analyze_risk(disruptions, inventory_path="data/inventory.json", vendors_path
     with open(inventory_path) as f:
         inventory = json.load(f)
     vendors = pd.read_csv(vendors_path)
-    risk_reports = []
-    seen = set()  # For deduplication
-    for item in inventory:
-        if 'vendor_id' not in item:
-            continue
-        vendor_rows = vendors[vendors['vendor_id'] == item['vendor_id']]
-        if vendor_rows.empty:
-            continue
-        vendor_info = vendor_rows.iloc[0]
-        # Edge case: vendor failure
-        if vendor_info.get('status', '').lower() in ['bankrupt', 'failed', 'inactive']:
-            risk_report = {
-                "product_id": item['product_id'],
-                "vendor": vendor_info['vendor_id'],
-                "delay_estimate": "Unknown",
-                "impact_level": "Critical",
-                "risk_score": 100,
-                "escalation": "Vendor failure - escalate to human ops",
-                "cost_impact": 10000  # Example: high cost for vendor failure
-            }
-            risk_reports.append(risk_report)
-            continue
-        for disruption in disruptions:
-            # Deduplicate by event_type, location, and product_id
-            dedup_key = (disruption.get('event_type'), disruption.get('location'), item['product_id'])
-            if dedup_key in seen:
-                continue
-            seen.add(dedup_key)
-            matched = False
-            # Match by container_id, ship_name, or flight_number if present in both event and item
-            for key in ["container_id", "ship_name", "flight_number"]:
-                if key in disruption and key in item and disruption.get(key) and item.get(key):
-                    if disruption[key] == item[key]:
-                        matched = True
+    llm_input = []
+    for disruption in disruptions:
+        event_loc = disruption.get('location', '').lower()
+        for item in inventory:
+            # Match if disruption location is in route, current_location, or any leg (fuzzy, case-insensitive)
+            match = False
+            # Route
+            if 'route' in item and isinstance(item['route'], list):
+                for loc in item['route']:
+                    if event_loc in loc.lower() or loc.lower() in event_loc:
+                        match = True
                         break
-            # If not matched by ID, check current_location and route waypoints
-            if not matched:
-                event_loc = disruption.get('location', '')
-                if 'current_location' in item and item['current_location'] and event_loc in item['current_location']:
-                    matched = True
-                elif 'route' in item and isinstance(item['route'], list) and any(event_loc in wp for wp in item['route']):
-                    matched = True
-                elif vendor_info['location'] in event_loc:
-                    matched = True
-            if matched:
-                score = calculate_risk_score(disruption['severity'], item['criticality_score'])
-                # --- Predictive ETA and Delay Propagation ---
-                delay_days = 0
-                cost_impact = 0
-                if disruption['severity'] == 'High':
-                    delay_days = 3
-                    cost_impact = 2000
-                elif disruption['severity'] == 'Medium':
-                    delay_days = 1
-                    cost_impact = 500
-                # Update ETA for affected leg and propagate
-                legs = item.get('legs', [])
-                affected_leg = None
-                for leg in legs:
-                    if event_loc in [leg.get('origin'), leg.get('destination'), leg.get('current_location')]:
-                        affected_leg = leg
+            # Current location
+            if not match and 'current_location' in item and item['current_location']:
+                cloc = item['current_location'].lower()
+                if event_loc in cloc or cloc in event_loc:
+                    match = True
+            # Legs
+            if not match and 'legs' in item and isinstance(item['legs'], list):
+                for leg in item['legs']:
+                    for key in ['origin', 'destination', 'current_location']:
+                        lloc = leg.get(key)
+                        if lloc and (event_loc in lloc.lower() or lloc.lower() in event_loc):
+                            match = True
+                            break
+                    if match:
                         break
-                if affected_leg and delay_days > 0:
-                    # Update ETA for affected leg
-                    try:
-                        from datetime import datetime, timedelta
-                        eta_dt = datetime.strptime(affected_leg['eta'], "%Y-%m-%d")
-                        new_eta = eta_dt + timedelta(days=delay_days)
-                        affected_leg['eta'] = new_eta.strftime("%Y-%m-%d")
-                        affected_leg['status'] = 'delayed'
-                        # Propagate delay to downstream legs
-                        propagate = False
-                        for leg in legs:
-                            if propagate:
-                                eta_dt = datetime.strptime(leg['eta'], "%Y-%m-%d")
-                                leg['eta'] = (eta_dt + timedelta(days=delay_days)).strftime("%Y-%m-%d")
-                            if leg is affected_leg:
-                                propagate = True
-                    except Exception as e:
-                        logging.warning(f"Failed to update ETA for {item['product_id']}: {e}")
-                risk_report = {
-                    "product_id": item['product_id'],
-                    "vendor": vendor_info['vendor_id'],
-                    "delay_estimate": f"{delay_days} days" if delay_days else "2-5 days",
-                    "impact_level": disruption['severity'],
-                    "risk_score": score,
-                    "cost_impact": cost_impact
-                }
-                # Include all relevant info
-                for key in ["container_id", "ship_name", "flight_number", "current_location", "route", "shipping_origin", "destination", "status", "legs"]:
-                    if key in item:
-                        risk_report[key] = item[key]
-                # Escalate if no alternate route is possible (demo: if route has only 1 leg left and disruption is at destination)
-                if 'route' in item and isinstance(item['route'], list) and len(item['route']) <= 2 and disruption.get('location') == item.get('destination'):
-                    risk_report['escalation'] = "No alternate route available - escalate to human ops"
-                risk_reports.append(risk_report)
-    return risk_reports 
+            if match:
+                vendor_info = {}
+                if 'vendor_id' in item:
+                    vendor_rows = vendors[vendors['vendor_id'] == item['vendor_id']]
+                    if not vendor_rows.empty:
+                        vendor_info = vendor_rows.iloc[0].to_dict()
+                llm_input.append({
+                    "shipment": item,
+                    "vendor": vendor_info,
+                    "disruption": disruption
+                })
+    if not llm_input:
+        return []
+    if GROQ_API_KEY:
+        try:
+            llm_prompt = PromptTemplate(
+                input_variables=["llm_input"],
+                template="""
+You are a supply chain risk analyst AI. For each shipment/disruption/vendor triple below, assess the risk:
+- shipment: dict with product_id, route, current_location, status, etc.
+- vendor: dict with vendor_id, status, location, etc.
+- disruption: dict with event_type, location, severity, etc.
+For each, output a JSON object with:
+- product_id
+- risk_score (0-100)
+- impact_level (Low/Medium/High/Critical)
+- delay_estimate (text)
+- cost_impact (number)
+- escalation (if any)
+- summary (1-2 sentences)
+Input:
+{llm_input}
+
+If the input is empty, output an empty JSON list: []
+
+IMPORTANT: Output ONLY valid JSON, with no explanation, markdown, or code block. Do NOT include any text, comments, or formatting outside the JSON.
+"""
+            )
+            llm = ChatGroq(groq_api_key=GROQ_API_KEY, model_name="llama-3.3-70b-versatile")
+            chain = LLMChain(llm=llm_prompt, prompt=llm_prompt)
+            result = chain.run(llm_input=str(llm_input))
+            import json as _json
+            try:
+                risk_reports = _json.loads(result)
+            except Exception as e:
+                logging.error(f"LLM did not return valid JSON: {e}. Output: {result}")
+                risk_reports = []
+            return risk_reports
+        except Exception as e:
+            logging.error(f"LLM risk analysis failed, falling back. Error: {e}")
+            return []
+    else:
+        logging.warning("GROQ_API_KEY not set. LLM-based risk analysis will not run.")
+        return [] 

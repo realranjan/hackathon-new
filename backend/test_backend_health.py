@@ -133,7 +133,7 @@ def test_genai_plan():
     assert response.status_code == 200
     data = response.json()
     assert "action_plan" in data
-    assert isinstance(data["action_plan"], dict)
+    assert isinstance(data["action_plan"], list)
 
 def test_user_registration_and_login():
     # Register user

@@ -142,4 +142,44 @@ async def test_full_api_flow():
         # Update shipment provider with missing fields
         headers = {"Authorization": f"Bearer {tokens['operator']}"}
         resp = await ac.post("/update_shipment_provider/", json={"product_id": "P1001", "provider": "test"}, headers=headers)
-        assert resp.status_code == 400 or resp.status_code == 422 
+        assert resp.status_code == 400 or resp.status_code == 422
+        # Password reset flow
+        resp = await ac.post("/auth/request_password_reset", json={"email": USERS[0]["email"]})
+        assert resp.status_code == 200
+        reset_token = resp.json().get("token")
+        # Invalid token
+        resp = await ac.post("/auth/reset_password", json={"token": "invalid", "new_password": "NewPass123!"})
+        assert resp.status_code == 400
+        # Valid token, short password
+        resp = await ac.post("/auth/reset_password", json={"token": reset_token, "new_password": "123"})
+        assert resp.status_code == 400
+        # Valid token, good password
+        resp = await ac.post("/auth/reset_password", json={"token": reset_token, "new_password": "NewPass123!"})
+        assert resp.status_code == 200
+        # Email verification flow
+        resp = await ac.post("/auth/request_email_verification", json={"email": USERS[0]["email"]})
+        assert resp.status_code == 200
+        verify_token = resp.json().get("token")
+        # Invalid token
+        resp = await ac.post("/auth/verify_email", json={"token": "invalid"})
+        assert resp.status_code == 400
+        # Valid token
+        resp = await ac.post("/auth/verify_email", json={"token": verify_token})
+        assert resp.status_code == 200
+        # Admin user management endpoints
+        headers = {"Authorization": f"Bearer {tokens['admin']}"}
+        resp = await ac.get("/admin/users/", headers=headers)
+        assert resp.status_code == 200
+        users_list = resp.json().get("users", [])
+        if users_list:
+            user_id = users_list[0]["id"]
+            # Update user
+            resp = await ac.post("/admin/user/update/", json={"user_id": user_id, "role": "viewer", "is_active": True}, headers=headers)
+            assert resp.status_code == 200
+            # Delete user (should not delete self, so skip if only one user)
+            if len(users_list) > 1:
+                resp = await ac.post("/admin/user/delete/", json={"user_id": users_list[1]["id"]}, headers=headers)
+                assert resp.status_code == 200
+        # Audit log endpoint
+        resp = await ac.get("/admin/audit_log/", headers=headers)
+        assert resp.status_code == 200 

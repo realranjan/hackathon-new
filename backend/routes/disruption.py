@@ -22,14 +22,20 @@ disruption_router = APIRouter()
 async def simulate_disruptions(request: Request, disruptions: List[DisruptionEvent] = Body(...), user=Depends(get_current_user_role("admin"))):
     alerts = []
     try:
+        # Pass all disruptions at once to analyze_risk
+        disruption_dicts = [event.dict() for event in disruptions]
+        risk_report = analyze_risk(disruption_dicts)
+        action_plan = generate_action_plan(risk_report)
         for event in disruptions:
             event_payload = event.dict()
-            risk_report = analyze_risk(event_payload)
-            action_plan = generate_action_plan(risk_report)
+            # Find all risk reports for this event (by location/event_type/timestamp)
+            event_risks = [r for r in risk_report if r.get("disruption", {}).get("location") == event_payload["location"] and r.get("disruption", {}).get("event_type") == event_payload["event_type"] and r.get("disruption", {}).get("timestamp") == event_payload["timestamp"]]
+            # Find all action plans for this event (by product_id or disruption)
+            event_plans = [p for p in action_plan if any(r.get("product_id") == p.get("product_id") for r in event_risks)]
             alert = {
                 "event": event_payload,
-                "risk_report": risk_report,
-                "action_plan": action_plan
+                "risk_report": event_risks,
+                "action_plan": event_plans
             }
             with alert_lock:
                 alert_log.append(alert)
@@ -43,4 +49,8 @@ async def simulate_disruptions(request: Request, disruptions: List[DisruptionEve
 @disruption_router.post("/genai_plan/", response_model=GenAIPlanResponse)
 async def genai_plan_endpoint(request: Request, risk_report: List[Dict[str, Any]] = Body(...), user=Depends(get_current_user_role())):
     action_plan = generate_action_plan(risk_report)
-    return {"action_plan": action_plan} 
+    return {"action_plan": action_plan}
+
+@disruption_router.get("/alerts/", response_model=AlertResponse)
+async def get_alerts():
+    return {"alerts": alert_log} 

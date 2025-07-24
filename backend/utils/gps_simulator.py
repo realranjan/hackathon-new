@@ -1,6 +1,7 @@
 import json
 import os
 import time
+import logging
 from utils.data_loader import update_shipment_location_by_gps
 
 INVENTORY_PATH = "data/inventory.json"
@@ -31,21 +32,21 @@ def simulate_shipment_gps(product_id: str, device_id: str | None = None):
         inventory = json.load(f)
     shipment = next((item for item in inventory if item["product_id"] == product_id), None)
     if not shipment or "route" not in shipment:
-        print(f"Shipment {product_id} not found or has no route.")
+        logging.warning(f"Shipment {product_id} not found or has no route.")
         return
     route = shipment["route"]
-    print(f"Simulating GPS updates for {product_id} along route: {' → '.join(route)}")
+    logging.info(f"Simulating GPS updates for {product_id} along route: {' → '.join(route)}")
     for city in route:
         coords = CITY_COORDS.get(city)
         if not coords:
-            print(f"No coordinates for {city}, skipping.")
+            logging.warning(f"No coordinates for {city}, skipping.")
             continue
         lat, lon = coords
         # Update backend (reverse geocode and update current_location)
         update_shipment_location_by_gps(product_id, lat, lon)
-        print(f"  - Moved {product_id} to {city} ({lat}, {lon})")
+        logging.info(f"  - Moved {product_id} to {city} ({lat}, {lon})")
         time.sleep(SIM_DELAY)
-    print(f"  - Finished simulating GPS updates for {product_id}.")
+    logging.info(f"  - Finished simulating GPS updates for {product_id}.")
 
 def simulate_all_shipments():
     """Simulate GPS updates for all shipments in inventory.json."""

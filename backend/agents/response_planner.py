@@ -12,15 +12,13 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 llm_prompt = PromptTemplate(
     input_variables=["risk_report"],
     template="""
-Given this risk report (each item includes shipping_origin, destination, current_location, route, and escalation if present):
+Given this risk report (a list, each item includes shipping_origin, destination, current_location, route, status, disruption, vendor, and escalation if present):
 {risk_report}
-For each affected shipment:
-- If escalation is present, explain why (e.g., vendor failure, no alternate route).
-- Otherwise, suggest alternate shipping routes from current_location to destination (if possible), considering the route and any disruptions.
-- Suggest alternate vendors (if available).
-- Recommend mitigation steps.
-- Generate a notification message for the operations team.
-Output as a JSON object with keys: new_route, alt_vendor, mitigation_steps, notification_text, escalation (if any).
+
+For each affected shipment, output a JSON object with the specified fields.
+If the risk report is empty, output an empty JSON list: []
+
+IMPORTANT: Output ONLY valid JSON, with no explanation, markdown, or code block. Do NOT include any text, comments, or formatting outside the JSON.
 """
 )
 
@@ -28,42 +26,38 @@ if not GROQ_API_KEY:
     logging.warning("GROQ_API_KEY not set. LLM-based action planning will use fallback.")
 
 def generate_action_plan(risk_report):
+    if not risk_report:
+        return []
     # Use LLM if API key is available
     if GROQ_API_KEY:
         try:
-            llm = ChatGroq(groq_api_key=GROQ_API_KEY, model_name="mixtral-8x7b-32768")
+            llm = ChatGroq(groq_api_key=GROQ_API_KEY, model_name="llama-3.3-70b-versatile")
             chain = LLMChain(llm=llm, prompt=llm_prompt)
             result = chain.run(risk_report=str(risk_report))
             import json
+            raw_result = result.strip()
             try:
-                plan = json.loads(result)
+                plans = json.loads(raw_result)
             except Exception as e:
-                logging.error(f"LLM did not return valid JSON: {e}. Output: {result}")
-                plan = {}
-            # Add risk_score and summary
-            if risk_report:
-                max_score = max(r['risk_score'] for r in risk_report)
-                summary = f"Highest risk score: {max_score}"
-            else:
-                max_score = 0
-                summary = "No risk detected."
-            plan["risk_score"] = max_score
-            plan["summary"] = summary
-            return plan
+                logging.error(f"LLM did not return valid JSON: {e}. Output: {raw_result}")
+                # Try to fix common JSON issues (remove trailing commas)
+                import re
+                fixed = re.sub(r',\s*([}\]])', r'\1', raw_result)
+                try:
+                    plans = json.loads(fixed)
+                except Exception as e2:
+                    logging.error(f"LLM JSON fix attempt failed: {e2}. Output: {fixed}")
+                    raise RuntimeError(f"LLM did not return valid JSON. Raw output: {raw_result}")
+            # Add risk_score and summary for each plan if not present
+            for i, plan in enumerate(plans):
+                if 'risk_score' not in plan and i < len(risk_report):
+                    plan['risk_score'] = risk_report[i].get('risk_score', 0)
+                if 'summary' not in plan and i < len(risk_report):
+                    plan['summary'] = risk_report[i].get('summary', '')
+            return plans
         except Exception as e:
-            logging.error(f"LLM action plan failed, falling back. Error: {e}")
-    # Fallback: rule-based
-    if risk_report:
-        max_score = max(r['risk_score'] for r in risk_report)
-        summary = f"Highest risk score: {max_score}"
+            logging.error(f"LLM action plan failed. Error: {e}")
+            raise RuntimeError(f"LLM action plan failed: {e}")
     else:
-        max_score = 0
-        summary = "No risk detected."
-    return {
-        "new_route": None,
-        "alt_vendor": None,
-        "mitigation_steps": ["Monitor situation", "Contact vendor"],
-        "notification_text": summary,
-        "risk_score": max_score,
-        "summary": summary
-    } 
+        logging.error("GROQ_API_KEY not set. LLM-based action planning will not run.")
+        raise RuntimeError("GROQ_API_KEY not set. LLM-based action planning will not run.") 

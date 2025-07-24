@@ -1,1 +1,350 @@
-[]
+[
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2025-07-24T11:00:20.352262",
+      "source": "Simulated",
+      "mode": "road",
+      "data_source": "simulated"
+    },
+    "risk_report": [],
+    "action_plan": {
+      "new_route": null,
+      "alt_vendor": null,
+      "mitigation_steps": [
+        "Monitor situation",
+        "Contact vendor"
+      ],
+      "notification_text": "No risk detected.",
+      "risk_score": 0,
+      "summary": "No risk detected."
+    }
+  },
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2025-07-24T11:26:42.877736",
+      "source": "Simulated",
+      "mode": "road",
+      "data_source": "simulated"
+    },
+    "risk_report": [],
+    "action_plan": {
+      "new_route": null,
+      "alt_vendor": null,
+      "mitigation_steps": [
+        "Monitor situation",
+        "Contact vendor"
+      ],
+      "notification_text": "No risk detected.",
+      "risk_score": 0,
+      "summary": "No risk detected."
+    }
+  },
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2025-07-24T11:36:44.370834",
+      "source": "Simulated",
+      "mode": "road",
+      "data_source": "simulated"
+    },
+    "risk_report": [],
+    "action_plan": {
+      "new_route": null,
+      "alt_vendor": null,
+      "mitigation_steps": [
+        "Monitor situation",
+        "Contact vendor"
+      ],
+      "notification_text": "No risk detected.",
+      "risk_score": 0,
+      "summary": "No risk detected."
+    }
+  },
+  {
+    "event": {
+      "location": "Hubli",
+      "event_type": "Flood",
+      "severity": "High",
+      "timestamp": "2024-06-10T10:00:00Z",
+      "source": "Simulated",
+      "mode": "road"
+    },
+    "risk_report": [],
+    "action_plan": {
+      "new_route": null,
+      "alt_vendor": null,
+      "mitigation_steps": [
+        "Monitor situation",
+        "Contact vendor"
+      ],
+      "notification_text": "No risk detected.",
+      "risk_score": 0,
+      "summary": "No risk detected."
+    }
+  },
+  {
+    "event": {
+      "location": "Nagpur",
+      "event_type": "Strike",
+      "severity": "Medium",
+      "timestamp": "2024-06-11T12:00:00Z",
+      "source": "Simulated",
+      "mode": "road"
+    },
+    "risk_report": [],
+    "action_plan": {
+      "new_route": null,
+      "alt_vendor": null,
+      "mitigation_steps": [
+        "Monitor situation",
+        "Contact vendor"
+      ],
+      "notification_text": "No risk detected.",
+      "risk_score": 0,
+      "summary": "No risk detected."
+    }
+  },
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2024-06-01T12:00:00Z",
+      "source": "Simulated",
+      "mode": null
+    },
+    "risk_report": [],
+    "action_plan": {
+      "new_route": null,
+      "alt_vendor": null,
+      "mitigation_steps": [
+        "Monitor situation",
+        "Contact vendor"
+      ],
+      "notification_text": "No risk detected.",
+      "risk_score": 0,
+      "summary": "No risk detected."
+    }
+  },
+  {
+    "event": {
+      "location": "Hubli",
+      "event_type": "Flood",
+      "severity": "High",
+      "timestamp": "2024-06-10T10:00:00Z",
+      "source": "Simulated",
+      "mode": "road"
+    },
+    "risk_report": [],
+    "action_plan": {
+      "new_route": null,
+      "alt_vendor": null,
+      "mitigation_steps": [
+        "Monitor situation",
+        "Contact vendor"
+      ],
+      "notification_text": "No risk detected.",
+      "risk_score": 0,
+      "summary": "No risk detected."
+    }
+  },
+  {
+    "event": {
+      "location": "Nagpur",
+      "event_type": "Strike",
+      "severity": "Medium",
+      "timestamp": "2024-06-11T12:00:00Z",
+      "source": "Simulated",
+      "mode": "road"
+    },
+    "risk_report": [],
+    "action_plan": {
+      "new_route": null,
+      "alt_vendor": null,
+      "mitigation_steps": [
+        "Monitor situation",
+        "Contact vendor"
+      ],
+      "notification_text": "No risk detected.",
+      "risk_score": 0,
+      "summary": "No risk detected."
+    }
+  },
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2025-07-24T12:06:22.121594",
+      "source": "Simulated",
+      "mode": "road",
+      "data_source": "simulated"
+    },
+    "risk_report": [],
+    "action_plan": {
+      "new_route": null,
+      "alt_vendor": null,
+      "mitigation_steps": [
+        "Monitor situation",
+        "Contact vendor"
+      ],
+      "notification_text": "No risk detected.",
+      "risk_score": 0,
+      "summary": "No risk detected."
+    }
+  },
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2024-06-01T12:00:00Z",
+      "source": "Simulated",
+      "mode": null
+    },
+    "risk_report": [],
+    "action_plan": []
+  },
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2024-06-01T12:00:00Z",
+      "source": "Simulated",
+      "mode": null
+    },
+    "risk_report": [],
+    "action_plan": []
+  },
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2024-06-01T12:00:00Z",
+      "source": "Simulated",
+      "mode": null
+    },
+    "risk_report": [],
+    "action_plan": []
+  },
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2025-07-24T12:36:41.561164",
+      "source": "Simulated",
+      "mode": "road",
+      "data_source": "simulated"
+    },
+    "risk_report": [],
+    "action_plan": []
+  },
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2024-06-01T12:00:00Z",
+      "source": "Simulated",
+      "mode": null
+    },
+    "risk_report": [],
+    "action_plan": []
+  },
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2024-06-01T12:00:00Z",
+      "source": "Simulated",
+      "mode": null
+    },
+    "risk_report": [],
+    "action_plan": []
+  },
+  {
+    "event": {
+      "location": "Hubli",
+      "event_type": "Flood",
+      "severity": "High",
+      "timestamp": "2024-06-10T10:00:00Z",
+      "source": "Simulated",
+      "mode": "road"
+    },
+    "risk_report": [],
+    "action_plan": []
+  },
+  {
+    "event": {
+      "location": "Nagpur",
+      "event_type": "Strike",
+      "severity": "Medium",
+      "timestamp": "2024-06-11T12:00:00Z",
+      "source": "Simulated",
+      "mode": "road"
+    },
+    "risk_report": [],
+    "action_plan": []
+  },
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2024-06-01T12:00:00Z",
+      "source": "Simulated",
+      "mode": null
+    },
+    "risk_report": [],
+    "action_plan": []
+  },
+  {
+    "event": {
+      "location": "Hubli",
+      "event_type": "Flood",
+      "severity": "High",
+      "timestamp": "2024-06-10T10:00:00Z",
+      "source": "Simulated",
+      "mode": "road"
+    },
+    "risk_report": [],
+    "action_plan": []
+  },
+  {
+    "event": {
+      "location": "Nagpur",
+      "event_type": "Strike",
+      "severity": "Medium",
+      "timestamp": "2024-06-11T12:00:00Z",
+      "source": "Simulated",
+      "mode": "road"
+    },
+    "risk_report": [],
+    "action_plan": []
+  },
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2025-07-24T13:07:29.699113",
+      "source": "Simulated",
+      "mode": "road",
+      "data_source": "simulated"
+    },
+    "risk_report": [],
+    "action_plan": []
+  }
+]

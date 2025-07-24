@@ -4,6 +4,7 @@ from email.mime.text import MIMEText
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 from twilio.rest import Client as TwilioClient
+from audit import log_audit
 
 # --- Email Notification ---
 def send_email_notification(subject, body, to_email):
@@ -21,26 +22,22 @@ def send_email_notification(subject, body, to_email):
             server.starttls()
             server.login(smtp_user, smtp_pass)
             server.sendmail(from_email, [to_email], msg.as_string())
-        print(f"Email sent to {to_email}")
     except Exception as e:
-        print(f"Email notification failed: {e}")
+        log_audit("email_notification_failed", from_email, target=to_email, details=str(e))
 
 # --- Slack Notification ---
-def send_slack_notification(message, channel=None):
+def send_slack_notification(subject, body, channel):
     slack_token = os.getenv("SLACK_TOKEN")
-    slack_channel = channel or os.getenv("SLACK_CHANNEL")
-    if not slack_token or not slack_channel:
-        print("Slack token or channel not set.")
+    if not slack_token or not channel:
         return
     client = WebClient(token=slack_token)
     try:
-        client.chat_postMessage(channel=slack_channel, text=message)
-        print(f"Slack message sent to {slack_channel}")
+        client.chat_postMessage(channel=channel, text=f"{subject}\n{body}")
     except SlackApiError as e:
-        print(f"Slack notification failed: {e.response['error']}")
+        log_audit("slack_notification_failed", "system", target=channel, details=str(e))
 
 # --- SMS Notification (Twilio) ---
-def send_sms_notification(body, to_number):
+def send_twilio_notification(body, to_number):
     twilio_sid = os.getenv("TWILIO_SID")
     twilio_token = os.getenv("TWILIO_TOKEN")
     from_number = os.getenv("TWILIO_FROM")
@@ -52,6 +49,7 @@ def send_sms_notification(body, to_number):
         client.messages.create(body=body, from_=from_number, to=to_number)
         print(f"SMS sent to {to_number}")
     except Exception as e:
+        log_audit("twilio_notification_failed", from_number, target=to_number, details=str(e))
         print(f"SMS notification failed: {e}")
 
 # --- Unified Notification Router ---
@@ -59,6 +57,6 @@ def send_notification(subject, body, channels=["email", "slack"], to_email=None,
     if "email" in channels and to_email:
         send_email_notification(subject, body, to_email)
     if "slack" in channels:
-        send_slack_notification(f"{subject}\n{body}", channel=slack_channel)
+        send_slack_notification(subject, body, slack_channel)
     if "sms" in channels and to_number:
-        send_sms_notification(body, to_number) 
+        send_twilio_notification(body, to_number) 
