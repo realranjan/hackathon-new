@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import logging
 import functools
 import datetime
+import json
 
 load_dotenv()
 
@@ -37,6 +38,8 @@ Your task is to return a JSON array where each object represents a structured ac
 **Guidelines**:
 - Think logically and prioritize realism and feasibility.
 - Ensure the recommended actions directly address delay and cost.
+- **You must always return at least one action plan per risk item.**
+- If you cannot recommend actions, explain why in the summary field.
 - Output must be a valid raw JSON array with no markdown, comments, or formatting—**only JSON**.
 
 Return only the JSON array.
@@ -79,9 +82,9 @@ def generate_action_plan(risk_report):
     try:
         llm = ChatGroq(groq_api_key=GROQ_API_KEY, model_name="llama-3.3-70b-versatile")
         chain = LLMChain(llm=llm, prompt=llm_prompt)
-        result = chain.run(risk_report=str(risk_report))
+        # Use strict JSON for LLM input
+        result = chain.run(risk_report=json.dumps(risk_report))
         log_agent("llm_raw_output_for_action_plan", result=result)
-        import json
         raw_result = result.strip()
         try:
             plans = json.loads(raw_result)

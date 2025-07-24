@@ -8,6 +8,7 @@ from langchain.chains import LLMChain
 from dotenv import load_dotenv
 import functools
 import datetime
+from utils.data_loader import load_inventory, load_vendors
 load_dotenv()
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
@@ -26,7 +27,8 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 #     airtable_base_id=os.getenv("AIRTABLE_BASE_ID"),
 #     airtable_table_name=os.getenv("AIRTABLE_TABLE_NAME")
 # )
-# By default, the code below uses local files (data/inventory.json, data/vendors.csv)
+# Remove legacy comments about inventory.json and vendors.csv
+# All data is now loaded from Supabase using load_inventory and load_vendors
 
 def calculate_risk_score(severity, criticality):
     # Simple scoring: High=80, Medium=50, Low=20, scaled by criticality (0-100)
@@ -44,8 +46,6 @@ def generate_fallback_risk_reports(llm_input):
     Returns:
         list: List of structured risk report dictionaries.
     """
-    if not llm_input:
-        return []
     
     def calculate_risk_score(severity_level, criticality_score):
         severity_weights = {"Low": 30, "Medium": 60, "High": 90}
@@ -130,38 +130,16 @@ def log_agent(event, **kwargs):
     print(f"[AGENT] {ts} | {event} | " + " | ".join(f"{k}={v}" for k, v in kwargs.items()))
 
 @detailed_log
-def analyze_risk(disruptions, inventory_path="data/inventory.json", vendors_path="data/vendors.csv"):
+def analyze_risk(disruptions):
     log_agent("analyze_risk_called", disruptions=disruptions)
     if not isinstance(disruptions, list):
         disruptions = [disruptions]
-    
-    # Fix: Look for files in the project root directory
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    inventory_path = os.path.join(project_root, inventory_path) if not os.path.isabs(inventory_path) else inventory_path
-    vendors_path = os.path.join(project_root, vendors_path) if not os.path.isabs(vendors_path) else vendors_path
-    
-    if not os.path.exists(inventory_path):
-        logging.warning(f"Missing inventory file: {inventory_path}")
-        return []
 
     try:
-        with open(inventory_path) as f:
-            inventory = json.load(f)
-        # Airtable integration for vendors
-        import os
-        airtable_key = os.getenv("AIRTABLE_API_KEY")
-        airtable_base = os.getenv("AIRTABLE_BASE_ID")
-        airtable_table = os.getenv("AIRTABLE_TABLE_NAME")
-        from utils.data_loader import load_vendors
-        if airtable_key and airtable_base and airtable_table:
-            log_agent("using_airtable_for_vendors")
-            vendors = load_vendors(use_airtable=True, airtable_api_key=airtable_key, airtable_base_id=airtable_base, airtable_table_name=airtable_table)
-        else:
-            log_agent("using_csv_for_vendors")
-            import pandas as pd
-            vendors = pd.read_csv(vendors_path)
+        inventory = load_inventory()
+        vendors = load_vendors()
     except Exception as e:
-        logging.error(f"Error loading data files: {e}")
+        logging.error(f"Error loading data from Supabase: {e}")
         return []
 
     llm_input = []
@@ -184,27 +162,23 @@ def analyze_risk(disruptions, inventory_path="data/inventory.json", vendors_path
 
     # Log the LLM input
     log_agent("llm_input_for_risk_analysis", llm_input=llm_input)
+    print("[DEBUG] LLM INPUT:", json.dumps(llm_input, indent=2))
 
     try:
         llm = ChatGroq(groq_api_key=GROQ_API_KEY, model_name="llama-3.3-70b-versatile")
         chain = LLMChain(llm=llm, prompt=_get_risk_analysis_prompt())
-        result = chain.run(llm_input=str(llm_input))
-        
-        # Log the LLM raw output
+        # Use strict JSON for LLM input
+        result = chain.run(llm_input=json.dumps(llm_input))
         log_agent("llm_raw_output_for_risk_analysis", result=result)
-        
         risk_reports = json.loads(result)
         if not isinstance(risk_reports, list):
             raise ValueError("LLM output is not a list")
-            
-        # Validate and fix risk reports
         for report in risk_reports:
             if not isinstance(report, dict):
                 continue
             report['risk_score'] = min(100, max(0, int(report.get('risk_score', 50))))
             if 'summary' not in report:
                 report['summary'] = f"Risk analysis for product {report.get('product_id', 'unknown')}"
-        
         log_agent("final_risk_reports", risk_reports=risk_reports)
         return risk_reports
     except Exception as e:
@@ -254,18 +228,20 @@ Input Data:
 
 For each item in the input, generate a corresponding JSON object with the following fields:
 
-- "product_id": Unique product identifier from the item.
-- "risk_score": Integer between 0 and 100, based on severity of the disruption and criticality of the shipment.
-- "impact_level": One of ["Low", "Medium", "High", "Critical"], derived from the risk_score using consistent thresholds.
-- "delay_estimate": Estimated shipping delay in days (integer or range).
-- "cost_impact": Estimated cost impact in USD.
-- "escalation": Escalation action required, or "None" if not needed. Be specific if escalation is necessary (e.g., "Notify VP of Global Ops").
-- "summary": A concise 1–2 sentence explanation summarizing the risk and suggested action focus.
+- \"product_id\": Unique product identifier from the item.
+- \"risk_score\": Integer between 0 and 100, based on severity of the disruption and criticality of the shipment.
+- \"impact_level\": One of [\"Low\", \"Medium\", \"High\", \"Critical\"], derived from the risk_score using consistent thresholds.
+- \"delay_estimate\": Estimated shipping delay in days (integer or range).
+- \"cost_impact\": Estimated cost impact in USD.
+- \"escalation\": Escalation action required, or \"None\" if not needed. Be specific if escalation is necessary (e.g., \"Notify VP of Global Ops\").
+- \"summary\": A concise 1–2 sentence explanation summarizing the risk and suggested action focus.
 
 Instructions:
 - Derive values logically from the input context.
 - Use consistent logic to map `risk_score` to `impact_level` (e.g., 0–25=Low, 26–50=Medium, 51–75=High, 76–100=Critical).
 - Focus on realism and actionable insights.
+- **You must always return at least one risk report per input item.**
+- If you cannot assess risk, explain why in the summary field.
 
 Output Requirements:
 - Output a **JSON array** of the generated objects, one per item.

@@ -1,22 +1,21 @@
+import os
+import json
+import threading
 from fastapi import APIRouter, Request, Body, HTTPException, Depends, Query
 from models import DisruptionEvent, AlertResponse, GenAIPlanRequest, GenAIPlanResponse
 from auth import get_current_user_role
 from agents.risk_analyzer import analyze_risk
 from agents.response_planner import generate_action_plan
-import os
-import json
-import threading
 from typing import Any, Dict, List
 import logging
 import datetime
+from supabase import create_client
+from dotenv import load_dotenv
 
-ALERTS_FILE = "alerts.json"
-if os.path.exists(ALERTS_FILE):
-    with open(ALERTS_FILE, "r") as f:
-        alert_log: List[dict] = json.load(f)
-else:
-    alert_log: List[dict] = []
-alert_lock = threading.Lock()
+load_dotenv(dotenv_path=os.path.join("backend", ".env"))
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
+supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
 disruption_router = APIRouter()
 
@@ -60,10 +59,8 @@ async def simulate_disruptions(request: Request, disruptions: List[DisruptionEve
                 "action_plan": event_plans
             }
             log_api("appending_alert", alert=alert)
-            with alert_lock:
-                alert_log.append(alert)
-                with open(ALERTS_FILE, "w") as f:
-                    json.dump(alert_log, f, indent=2)
+            # Insert alert into Supabase
+            supabase.table("alert").insert(alert).execute()
             alerts.append(alert)
         log_api("returning_alerts_response", alerts=alerts)
         return {"alerts": alerts}
@@ -91,13 +88,14 @@ async def genai_plan_endpoint(request: Request, risk_report: List[Dict[str, Any]
 @disruption_router.get("/alerts/", response_model=AlertResponse)
 async def get_alerts():
     print("[API] /alerts/ called")
-    return {"alerts": alert_log}
+    alerts = supabase.table("alert").select("*").execute().data
+    return {"alerts": alerts}
 
 @disruption_router.post("/chat/")
 async def chat_endpoint(query: str = Body(..., embed=True)):
     log_api("chat_called", endpoint="/chat/", query=query)
-    # Use alerts, risk reports, and action plans as context
-    context = alert_log[-10:] if alert_log else []
+    # Use latest 10 alerts from Supabase as context
+    context = supabase.table("alert").select("*").order("id", desc=True).limit(10).execute().data or []
     prompt = f"You are a supply chain assistant. Here is recent alert data: {context}\nUser question: {query}\nAnswer in detail, using the data above."
     from langchain_groq import ChatGroq
     from langchain.prompts import PromptTemplate
@@ -112,8 +110,9 @@ async def chat_endpoint(query: str = Body(..., embed=True)):
 @disruption_router.get("/explain_risk/")
 async def explain_risk(product_id: str = Query(...)):
     log_api("explain_risk_called", endpoint="/explain_risk/", product_id=product_id)
-    # Find the latest risk report for this product
-    for alert in reversed(alert_log):
+    # Find the latest risk report for this product from Supabase alerts
+    alerts = supabase.table("alert").select("*").order("id", desc=True).execute().data or []
+    for alert in alerts:
         for rr in alert.get("risk_report", []):
             if rr.get("product_id") == product_id:
                 # Use LLM to explain
@@ -136,14 +135,23 @@ async def batch_simulate_disruptions(disruptions: List[DisruptionEvent] = Body(.
     risk_report = analyze_risk(disruption_dicts)
     action_plan = generate_action_plan(risk_report)
     log_api("batch_simulate_disruptions_result", risk_report=risk_report, action_plan=action_plan)
+    # Insert a batch alert into Supabase for each disruption
+    for event, rr, ap in zip(disruptions, risk_report, action_plan):
+        alert = {
+            "event": event.dict(),
+            "risk_report": [rr],
+            "action_plan": [ap] if isinstance(ap, dict) else ap
+        }
+        supabase.table("alert").insert(alert).execute()
     return {"risk_report": risk_report, "action_plan": action_plan}
 
 @disruption_router.get("/risk_heatmap/")
 async def risk_heatmap():
     log_api("risk_heatmap_called")
-    # Aggregate risk scores by location
+    # Aggregate risk scores by location from Supabase alerts
+    alerts = supabase.table("alert").select("*").execute().data or []
     location_risk = {}
-    for alert in alert_log:
+    for alert in alerts:
         event = alert.get("event", {})
         loc = event.get("location")
         for rr in alert.get("risk_report", []):

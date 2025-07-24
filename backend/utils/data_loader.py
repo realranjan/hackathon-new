@@ -1,9 +1,9 @@
-import pandas as pd
 import json
 import os
 from dotenv import load_dotenv
 import logging
 import requests
+from supabase import create_client, Client
 
 load_dotenv()
 
@@ -37,10 +37,11 @@ def get_latest_gps_position(device_id):
     return None, None
 
 # Example: update_shipment_location_by_gps(product_id, lat, lon)
-def update_shipment_location_by_gps(product_id, lat, lon, inventory_path="data/inventory.json"):
-    """Update a shipment's current_location in inventory.json based on GPS coordinates (reverse geocode to city/port)."""
+def update_shipment_location_by_gps(product_id, lat, lon, use_supabase=True):
+    """Update a shipment's current_location in Supabase based on GPS coordinates (reverse geocode to city/port)."""
     try:
         # Use OpenStreetMap Nominatim for reverse geocoding
+        import requests
         resp = requests.get(f"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={lon}")
         city = None
         if resp.status_code == 200:
@@ -48,17 +49,21 @@ def update_shipment_location_by_gps(product_id, lat, lon, inventory_path="data/i
             city = data.get("address", {}).get("city") or data.get("address", {}).get("town") or data.get("address", {}).get("village") or data.get("display_name")
         if not city:
             city = f"({lat:.2f},{lon:.2f})"
-        # Update inventory
-        with open(inventory_path) as f:
-            inventory = json.load(f)
-        for item in inventory:
-            if item.get("product_id") == product_id:
-                item["current_location"] = city
-                break
-        with open(inventory_path, "w") as f:
-            json.dump(inventory, f, indent=2)
+        from supabase import create_client
+        import os
+        from dotenv import load_dotenv
+        load_dotenv(dotenv_path=os.path.join("backend", ".env"))
+        SUPABASE_URL = os.getenv("SUPABASE_URL")
+        SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
+        supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+        resp = supabase.table("shipment").update({"current_location": city}).eq("product_id", product_id).execute()
+        if not resp.data:
+            import logging
+            logging.error(f"Failed to update shipment location in Supabase for {product_id}")
+            return None
         return city
     except Exception as e:
+        import logging
         logging.error(f"Failed to update shipment location by GPS: {e}")
         return None
 
@@ -91,42 +96,17 @@ def get_latest_location_from_provider(product_id, provider, provider_id=None, **
         logging.warning(f"Provider {provider} not supported.")
         return None, None
 
-def load_inventory(path="data/inventory.json", use_gsheet=False, gsheet_id=None, worksheet_name="Sheet1"):
-    if use_gsheet and gsheet_id:
-        try:
-            import gspread
-            from google.oauth2.service_account import Credentials
-            # Path to your service account key file
-            creds_path = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON", "service_account.json")
-            scopes = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-            creds = Credentials.from_service_account_file(creds_path, scopes=scopes)
-            gc = gspread.authorize(creds)
-            sh = gc.open_by_key(gsheet_id)
-            worksheet = sh.worksheet(worksheet_name)
-            records = worksheet.get_all_records()
-            return records
-        except Exception as e:
-            logging.error(f"Google Sheets load failed: {e}, falling back to local JSON.")
-    if not os.path.exists(path):
-        logging.warning(f"Inventory file not found: {path}")
-        return []
-    with open(path) as f:
-        return json.load(f)
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
-def load_vendors(path="data/vendors.csv", use_airtable=False, airtable_api_key=None, airtable_base_id=None, airtable_table_name=None):
-    if use_airtable and airtable_api_key and airtable_base_id and airtable_table_name:
-        try:
-            from pyairtable import Table
-            table = Table(airtable_api_key, airtable_base_id, airtable_table_name)
-            records = table.all()
-            # Flatten AirTable records
-            return [rec['fields'] for rec in records]
-        except Exception as e:
-            logging.error(f"AirTable load failed: {e}, falling back to local CSV.")
-    if not os.path.exists(path):
-        logging.warning(f"Vendors file not found: {path}")
-        return []
-    return pd.read_csv(path)
+def load_inventory():
+    return supabase.table("shipment").select("*").execute().data
+
+def load_vendors():
+    import pandas as pd
+    data = supabase.table("vendor").select("*").execute().data
+    return pd.DataFrame(data)
 
 def get_api_keys():
     return {

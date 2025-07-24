@@ -315,3 +315,48 @@ npm install axios react-query jwt-decode
 **With this guide, your React/Next.js frontend team can confidently build a modern, real-time, role-based supply chain dashboard on top of the SupplyWhiz backend.**
 
 If you want a starter Next.js repo, API client codegen, or more UI/UX wireframes, just ask! 
+
+# 🚀 Unified Data Layer: Supabase for All
+
+**All data (users, shipments, vendors, alerts, etc.) is now stored in Supabase (PostgreSQL).**
+- The FastAPI backend uses the Supabase Python client for all data access.
+- The Next.js frontend uses the Supabase JS client for direct CRUD/auth.
+- No more MySQL, SQLite, CSV, or local files. One source of truth.
+
+## .env Setup
+
+**Backend:**
+```
+SUPABASE_URL=https://<project>.supabase.co
+SUPABASE_SERVICE_KEY=your-service-role-key
+```
+
+**Frontend:**
+```
+NEXT_PUBLIC_SUPABASE_URL=https://<project>.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+## Example: Python (Backend)
+```python
+from supabase import create_client
+import os
+supabase = create_client(os.getenv("SUPABASE_URL"), os.getenv("SUPABASE_SERVICE_KEY"))
+users = supabase.table("user").select("*").execute().data
+```
+
+## Example: Next.js (Frontend)
+```js
+import { createClient } from '@supabase/supabase-js'
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+const { data, error } = await supabase.from('shipment').select('*')
+```
+
+## Developer Experience
+- All teams use the same Supabase DB.
+- No more DB confusion or local file issues.
+- Use the Supabase dashboard for quick data edits and inspection.
+- All business logic, AI, and LLM features remain in the backend.
+- Frontend can use Supabase for real-time dashboards, CRUD, and auth.
+
+**Welcome to a unified, modern, developer-friendly stack!** 

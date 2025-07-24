@@ -8,7 +8,26 @@ import plotly.graph_objects as go
 
 st.title("SupplyWhiz Dashboard")
 
+# --- Fetch shipments and locations from backend ---
 API_BASE = "http://localhost:8000"
+try:
+    shipments = requests.get(f"{API_BASE}/shipments/").json().get("shipments", [])
+    all_locations = set()
+    all_shipments = set()
+    for item in shipments:
+        all_shipments.add(item.get("product_id"))
+        all_locations.update(item.get("route", []))
+        if item.get("current_location"):
+            all_locations.add(item["current_location"])
+        for leg in item.get("legs", []):
+            if leg.get("origin"): all_locations.add(leg["origin"])
+            if leg.get("destination"): all_locations.add(leg["destination"])
+            if leg.get("current_location"): all_locations.add(leg["current_location"])
+    all_locations = sorted(list(all_locations))
+    all_shipments = sorted(list(all_shipments))
+except Exception as e:
+    all_locations = []
+    all_shipments = []
 
 # --- Authentication ---
 def login(email, password):
@@ -97,19 +116,6 @@ role = user["role"]
 is_admin = role == "admin" or user.get("is_superuser")
 is_operator = role == "operator" or is_admin
 is_viewer = role == "viewer" or is_operator or is_admin
-
-# Extract all unique locations from inventory for disruption simulation
-try:
-    with open("../data/inventory.json") as f:
-        inv = json.load(f)
-    all_locations = set()
-    for item in inv:
-        all_locations.update(item.get("route", []))
-        if item.get("current_location"):
-            all_locations.add(item["current_location"])
-    all_locations = sorted(list(all_locations))
-except Exception:
-    all_locations = []
 
 # --- Disruption Simulation UI ---
 st.header("Simulate Disruption")
@@ -246,12 +252,11 @@ else:
 # --- Real-Time Shipment Update Form ---
 st.header("Update Shipment Location/Status")
 try:
-    inventory = requests.get("http://localhost:8000/alerts/").json().get("alerts", [])
+    shipments = requests.get("http://localhost:8000/shipments/").json().get("shipments", [])
     # Extract unique product_ids from risk reports for selection
     all_shipments = set()
-    for alert in inventory:
-        for rr in alert.get("risk_report", []):
-            all_shipments.add(rr.get("product_id"))
+    for item in shipments:
+        all_shipments.add(item.get("product_id"))
     all_shipments = sorted(list(all_shipments))
 except Exception:
     all_shipments = []
@@ -297,9 +302,8 @@ if st.button("Simulate Disruptions"):
 # --- Show Current Shipments and Status ---
 st.header("Current Shipments")
 try:
-    with open("../data/inventory.json") as f:
-        inv = json.load(f)
-    for item in inv:
+    shipments = requests.get("http://localhost:8000/shipments/").json().get("shipments", [])
+    for item in shipments:
         st.markdown(f"**Product:** {item['product_id']} | **From:** {item['shipping_origin']} | **To:** {item['destination']} | **Current:** {item.get('current_location', 'Unknown')} | **Status:** {item.get('status', 'Unknown')}")
         st.markdown(f"Route: {' → '.join(item.get('route', []))}")
         st.markdown(f"Legs: {item.get('legs', [])}")
@@ -351,9 +355,8 @@ else:
 # --- Timeline View for Each Shipment ---
 st.header("Shipment Timelines")
 try:
-    with open("../data/inventory.json") as f:
-        inv = json.load(f)
-    for item in inv:
+    shipments = requests.get("http://localhost:8000/shipments/").json().get("shipments", [])
+    for item in shipments:
         st.markdown(f"### Product: {item['product_id']} | Status: {item.get('status', 'Unknown')}")
         if "legs" in item and item["legs"]:
             for i, leg in enumerate(item["legs"]):
@@ -367,11 +370,10 @@ except Exception as e:
 # --- Animated Map with Plotly ---
 st.header("Animated Shipment Map (Demo)")
 try:
-    with open("../data/inventory.json") as f:
-        inv = json.load(f)
+    shipments = requests.get("http://localhost:8000/shipments/").json().get("shipments", [])
     # Build a DataFrame for all legs and current locations
     map_rows = []
-    for item in inv:
+    for item in shipments:
         color = "red" if item.get("status") == "delayed" else ("orange" if item.get("status") == "rerouted" else "blue")
         for leg in item.get("legs", []):
             loc = leg.get("current_location") or leg.get("destination")
@@ -408,9 +410,8 @@ except Exception as e:
 # --- Timeline Chart for Each Shipment (Plotly) ---
 st.header("Shipment Timelines (Plotly)")
 try:
-    with open("../data/inventory.json") as f:
-        inv = json.load(f)
-    for item in inv:
+    shipments = requests.get("http://localhost:8000/shipments/").json().get("shipments", [])
+    for item in shipments:
         if "legs" in item and item["legs"]:
             fig = go.Figure()
             for i, leg in enumerate(item["legs"]):
@@ -444,9 +445,8 @@ device_options = [f"{d['id']} - {d.get('name','')} (Last: {d.get('lastUpdate','N
 device_id_map = {f"{d['id']} - {d.get('name','')} (Last: {d.get('lastUpdate','N/A')})": d['id'] for d in traccar_devices}
 
 try:
-    with open("../data/inventory.json") as f:
-        inv = json.load(f)
-    all_shipments = sorted([item["product_id"] for item in inv])
+    shipments = requests.get("http://localhost:8000/shipments/").json().get("shipments", [])
+    all_shipments = sorted([item["product_id"] for item in shipments])
 except Exception:
     all_shipments = []
 

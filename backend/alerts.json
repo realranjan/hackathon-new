@@ -588,5 +588,18 @@
         "risk_score": 85
       }
     ]
+  },
+  {
+    "event": {
+      "location": "Delhi",
+      "event_type": "Weather",
+      "severity": "Medium",
+      "timestamp": "2025-07-24T22:23:35.461511",
+      "source": "Simulated",
+      "mode": "road",
+      "data_source": "simulated"
+    },
+    "risk_report": [],
+    "action_plan": []
   }
 ]

@@ -2,6 +2,7 @@ import os
 import requests
 from fastapi import APIRouter
 from datetime import datetime, timedelta
+from supabase import create_client, Client
 
 integrations_router = APIRouter()
 
@@ -57,7 +58,6 @@ async def check_integrations():
             if resp.status_code == 200:
                 traccar_status = True
                 devices = resp.json()
-                # Check if at least one device has a recent lastUpdate (within 10 minutes)
                 now = datetime.utcnow()
                 for dev in devices:
                     last_update = dev.get("lastUpdate")
@@ -97,10 +97,14 @@ async def check_integrations():
     # LLM
     groq_key = os.getenv("GROQ_API_KEY")
     status["LLM_Groq"] = bool(groq_key)
-    # MySQL
-    mysql_host = os.getenv("MYSQL_HOST")
-    mysql_user = os.getenv("MYSQL_USER")
-    mysql_pass = os.getenv("MYSQL_PASSWORD")
-    mysql_db = os.getenv("MYSQL_DB")
-    status["MySQL"] = bool(mysql_host and mysql_user and mysql_pass and mysql_db)
+    # Supabase
+    supabase_url = os.getenv("SUPABASE_URL")
+    supabase_key = os.getenv("SUPABASE_SERVICE_KEY")
+    try:
+        supabase = create_client(supabase_url, supabase_key)
+        # Try a simple select
+        users = supabase.table("user").select("id").limit(1).execute().data
+        status["Supabase"] = True if users is not None else False
+    except Exception as e:
+        status["Supabase"] = False
     return {"integration_status": status} 

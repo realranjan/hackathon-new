@@ -1,29 +1,37 @@
 import os
 from dotenv import load_dotenv
-import aiomysql
+from supabase import create_client, Client
 from passlib.context import CryptContext
 
 load_dotenv()
 
-MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost")
-MYSQL_PORT = int(os.getenv("MYSQL_PORT", 3306))
-MYSQL_USER = os.getenv("MYSQL_USER", "root")
-MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "Pranusha@278992")
-MYSQL_DB = os.getenv("MYSQL_DB", "supplywhiz")
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
 JWT_SECRET = os.getenv("JWT_SECRET", "SECRET")
-
-print("DEBUG: MYSQL_USER =", MYSQL_USER)
-print("DEBUG: MYSQL_PASSWORD =", MYSQL_PASSWORD)
-print("DEBUG: MYSQL_DB =", MYSQL_DB)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-async def get_mysql_pool():
-    return await aiomysql.create_pool(
-        host=MYSQL_HOST,
-        port=MYSQL_PORT,
-        user=MYSQL_USER,
-        password=MYSQL_PASSWORD,
-        db=MYSQL_DB,
-        autocommit=True
-    )
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+
+# Example CRUD helpers
+
+def get_all_users():
+    return supabase.table("user").select("*").execute().data
+
+def get_user_by_email(email):
+    return supabase.table("user").select("*").eq("email", email).single().execute().data
+
+def create_user(user_dict):
+    return supabase.table("user").insert(user_dict).execute().data
+
+def get_all_shipments():
+    return supabase.table("shipment").select("*").execute().data
+
+def create_shipment(shipment_dict):
+    return supabase.table("shipment").insert(shipment_dict).execute().data
+
+def get_all_vendors():
+    return supabase.table("vendor").select("*").execute().data
+
+def create_vendor(vendor_dict):
+    return supabase.table("vendor").insert(vendor_dict).execute().data

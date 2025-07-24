@@ -7,6 +7,13 @@ import time
 import random
 import os
 import json
+from supabase import create_client
+from dotenv import load_dotenv
+
+load_dotenv(dotenv_path=os.path.join("backend", ".env"))
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
+supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
 API_KEYS = get_api_keys()
 REQUIRED_KEYS = ["NEWSAPI_KEY", "WEATHERSTACK_KEY", "TWITTER_API_KEY", "TWITTER_API_SECRET"]
@@ -247,21 +254,18 @@ async def fetch_or_simulate_events():
     if not events:
         logging.info("No real events found, using simulation.")
         # --- Dynamic simulation logic ---
-        # Load inventory to get possible locations
         try:
-            inventory_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "data", "inventory.json")
-            with open(inventory_path) as f:
-                inventory = json.load(f)
-            # Gather all unique locations from routes, origins, destinations, and legs
+            # Load inventory from Supabase to get possible locations
+            shipments = supabase.table("shipment").select("*").execute().data
             locations = set()
-            for item in inventory:
-                if 'route' in item:
+            for item in shipments:
+                if 'route' in item and item['route']:
                     locations.update(item['route'])
-                if 'shipping_origin' in item:
+                if 'shipping_origin' in item and item['shipping_origin']:
                     locations.add(item['shipping_origin'])
-                if 'destination' in item:
+                if 'destination' in item and item['destination']:
                     locations.add(item['destination'])
-                if 'legs' in item:
+                if 'legs' in item and item['legs']:
                     for leg in item['legs']:
                         for key in ['origin', 'destination', 'current_location']:
                             val = leg.get(key)
@@ -274,6 +278,7 @@ async def fetch_or_simulate_events():
         # Define possible event types
         event_types = ["Strike", "Flood", "Protest", "Port Congestion", "Political Unrest", "Weather"]
         # Randomly select location and event type
+        import random
         sim_location = random.choice(locations) if locations else "Bangalore"
         sim_event_type = random.choice(event_types)
         event_payload = {
