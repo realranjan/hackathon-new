@@ -38,18 +38,17 @@ def register(email, password, role):
         return False
 
 def api_request(method, endpoint, **kwargs):
+    print(f"[FRONTEND] API request: {method} {endpoint} kwargs={kwargs}")
     headers = kwargs.pop("headers", {})
     if "jwt" in st.session_state:
         headers["Authorization"] = f"Bearer {st.session_state['jwt']}"
-    resp = requests.request(method, f"{API_BASE}{endpoint}", headers=headers, **kwargs)
-    if resp.status_code in (401, 403):
-        user = st.session_state.get("user", {})
-        if user.get("role") == "admin" or user.get("is_superuser"):
-            st.warning("Admin session: backend returned 401/403, but you remain logged in. Check backend logs or token.")
-        else:
-            st.warning("Session expired or unauthorized. Please log in again.")
-            st.session_state.clear()
-    return resp
+    try:
+        resp = requests.request(method, f"{API_BASE}{endpoint}", headers=headers, **kwargs)
+        print(f"[FRONTEND] API response: {resp.status_code} {resp.text}")
+        return resp
+    except Exception as e:
+        print(f"[FRONTEND] API request error: {e}")
+        raise
 
 # --- Auth UI ---
 if "jwt" not in st.session_state or "user" not in st.session_state:
@@ -59,6 +58,8 @@ if "jwt" not in st.session_state or "user" not in st.session_state:
         email = st.text_input("Email", key="login_email")
         password = st.text_input("Password", type="password", key="login_pass")
         if st.button("Login"):
+            print(f"[FRONTEND] User attempting login: {email}")
+            print(f"[FRONTEND] Login input: email={email}, password={'*' * len(password)}")
             if login(email, password):
                 st.success("Login successful")
     with tab2:
@@ -66,6 +67,8 @@ if "jwt" not in st.session_state or "user" not in st.session_state:
         password = st.text_input("Password", type="password", key="reg_pass")
         role = st.selectbox("Role", ["admin", "operator", "viewer"], key="reg_role")
         if st.button("Register"):
+            print(f"[FRONTEND] User attempting registration: {email}, role: {role}")
+            print(f"[FRONTEND] Register input: email={email}, password={'*' * len(password)}, role={role}")
             register(email, password, role)
     st.stop()
 
@@ -94,6 +97,46 @@ role = user["role"]
 is_admin = role == "admin" or user.get("is_superuser")
 is_operator = role == "operator" or is_admin
 is_viewer = role == "viewer" or is_operator or is_admin
+
+# Extract all unique locations from inventory for disruption simulation
+try:
+    with open("../data/inventory.json") as f:
+        inv = json.load(f)
+    all_locations = set()
+    for item in inv:
+        all_locations.update(item.get("route", []))
+        if item.get("current_location"):
+            all_locations.add(item["current_location"])
+    all_locations = sorted(list(all_locations))
+except Exception:
+    all_locations = []
+
+# --- Disruption Simulation UI ---
+st.header("Simulate Disruption")
+if all_locations:
+    location = st.selectbox("Disruption Location", all_locations, key="disrupt_loc")
+    event_type = st.selectbox("Event Type", ["Strike", "Flood", "Port Closure", "Protest", "Shutdown", "Instability", "Earthquake", "Hurricane"], key="disrupt_type")
+    severity = st.selectbox("Severity", ["High", "Medium", "Low"], key="disrupt_severity")
+    timestamp = st.text_input("Timestamp (YYYY-MM-DDTHH:MM:SSZ)", value=time.strftime("%Y-%m-%dT%H:%M:%SZ"), key="disrupt_time")
+    source = st.text_input("Source", value="Simulated", key="disrupt_source")
+    if st.button("Simulate Disruption", key="simulate_disrupt_btn"):
+        print(f"[FRONTEND] Simulating disruption at {location} of type {event_type} with severity {severity}")
+        print(f"[FRONTEND] Disruption input: location={location}, event_type={event_type}, severity={severity}, timestamp={timestamp}, source={source}")
+        event = {
+            "location": location,
+            "event_type": event_type,
+            "severity": severity,
+            "timestamp": timestamp,
+            "source": source
+        }
+        response = api_request("POST", "/simulate_disruptions/", json=[event])
+        print(f"[FRONTEND] Simulate Disruption API response: {response.status_code} {response.text}")
+        if response.status_code == 200:
+            st.success("Disruption simulated!")
+        else:
+            st.error(response.json().get("detail", "Simulation failed."))
+else:
+    st.warning("No valid locations found in inventory for disruption simulation.")
 
 # Simple geocoding for demo locations
 LOCATION_COORDS = {
@@ -148,8 +191,22 @@ else:
         st.json(alert["risk_report"])
         st.markdown("**Action Plan:**")
         st.json(alert["action_plan"])
-        st.markdown(f"**Risk Score:** {alert['action_plan'].get('risk_score', 'N/A')}")
-        st.markdown("---")
+        
+        # Fix: Check if action_plan is a list or dict and handle accordingly
+        if isinstance(alert['action_plan'], dict):
+            risk_score = alert['action_plan'].get('risk_score', 'N/A')
+        elif isinstance(alert['action_plan'], list):
+            # If it's a list, try to find risk_score in the first item if available
+            if alert['action_plan'] and isinstance(alert['action_plan'][0], dict) and 'risk_score' in alert['action_plan'][0]:
+                risk_score = alert['action_plan'][0]['risk_score']
+            else:
+                # If it's an empty list or doesn't contain risk_score information
+                risk_score = 'N/A'
+        else:
+            risk_score = 'N/A'
+            
+        st.markdown(f"**Risk Score:** {risk_score}")
+        st.markdown("---") 
 
 # Map overlay for disruption locations
 st.header("Disruption Map")
@@ -170,7 +227,13 @@ if alerts:
     # Total alerts
     st.metric("Total Alerts", len(alerts))
     # Average risk score
-    risk_scores = [a["action_plan"].get("risk_score", 0) for a in alerts if a["action_plan"].get("risk_score") is not None]
+    risk_scores = []
+    for a in alerts:
+        if isinstance(a["action_plan"], dict) and a["action_plan"].get("risk_score") is not None:
+            risk_scores.append(a["action_plan"].get("risk_score", 0))
+        elif isinstance(a["action_plan"], list) and a["action_plan"] and isinstance(a["action_plan"][0], dict) and "risk_score" in a["action_plan"][0]:
+            risk_scores.append(a["action_plan"][0]["risk_score"])
+    
     if risk_scores:
         st.metric("Average Risk Score", round(sum(risk_scores)/len(risk_scores), 2))
     # Bar chart of alert counts by event type
@@ -198,8 +261,10 @@ if all_shipments:
     new_location = st.text_input("New Current Location")
     new_status = st.selectbox("Status", ["in_transit", "rerouted", "delayed", "delivered"])
     if st.button("Update Shipment"):
+        print(f"[FRONTEND] Updating shipment: {product_id}, new_location: {new_location}, new_status: {new_status}")
         update = {"product_id": product_id, "current_location": new_location, "status": new_status}
         response = api_request("POST", "/update_shipment/", json=update)
+        print(f"[FRONTEND] Update Shipment API response: {response.status_code} {response.text}")
         if response.status_code == 200:
             st.write(response.json())
         else:
@@ -365,6 +430,55 @@ try:
 except Exception as e:
     st.info(f"Could not load inventory for timeline chart: {e}")
 
+# --- Shipment Association and GPS Update (Traccar) ---
+st.header("Associate Traccar Device with Shipment")
+# Fetch Traccar devices from backend
+traccar_devices = []
+try:
+    resp = api_request("GET", "/list_traccar_devices/")
+    traccar_devices = resp.json().get("devices", [])
+except Exception as e:
+    print(f"[FRONTEND] Failed to fetch Traccar devices: {e}")
+
+device_options = [f"{d['id']} - {d.get('name','')} (Last: {d.get('lastUpdate','N/A')})" for d in traccar_devices]
+device_id_map = {f"{d['id']} - {d.get('name','')} (Last: {d.get('lastUpdate','N/A')})": d['id'] for d in traccar_devices}
+
+try:
+    with open("../data/inventory.json") as f:
+        inv = json.load(f)
+    all_shipments = sorted([item["product_id"] for item in inv])
+except Exception:
+    all_shipments = []
+
+if all_shipments:
+    assoc_product_id = st.selectbox("Select Shipment to Associate", all_shipments, key="assoc_pid")
+    assoc_device_label = st.selectbox("Select Traccar Device", device_options, key="assoc_did") if device_options else st.text_input("Traccar Device ID", key="assoc_did_txt")
+    assoc_device_id = device_id_map.get(assoc_device_label) if device_options else assoc_device_label
+    if st.button("Associate Device", key="assoc_btn"):
+        print(f"[FRONTEND] Associating device {assoc_device_id} with shipment {assoc_product_id}")
+        resp = api_request("POST", "/associate_traccar_device/", json={"product_id": assoc_product_id, "device_id": assoc_device_id})
+        st.write(resp.json())
+
+st.header("Update Shipment Location via Traccar GPS")
+update_gps_product_id = st.selectbox("Select Shipment for GPS Update", all_shipments, key="gps_pid2")
+update_gps_device_label = st.selectbox("Select Traccar Device (optional)", ["(Use associated device)"] + device_options, key="gps_did2") if device_options else st.text_input("Traccar Device ID (leave blank to use associated)", key="gps_did2_txt")
+update_gps_device_id = device_id_map.get(update_gps_device_label) if device_options and update_gps_device_label != "(Use associated device)" else None
+if st.button("Update via Traccar GPS", key="update_gps_btn"):
+    print(f"[FRONTEND] Updating shipment {update_gps_product_id} via Traccar device {update_gps_device_id}")
+    payload = {"product_id": update_gps_product_id}
+    if update_gps_device_id:
+        payload["device_id"] = update_gps_device_id
+    resp = api_request("POST", "/update_shipment_gps/", json=payload)
+    st.write(resp.json())
+
+if traccar_devices:
+    st.header("Traccar Devices (Live)")
+    for d in traccar_devices:
+        st.markdown(f"**ID:** {d['id']} | **Name:** {d.get('name','')} | **Status:** {d.get('status','N/A')} | **Last Update:** {d.get('lastUpdate','N/A')}")
+        pos = d.get('position')
+        if pos:
+            st.markdown(f"- **Lat/Lon:** {pos.get('latitude','N/A')}, {pos.get('longitude','N/A')} | **Speed:** {pos.get('speed','N/A')}")
+
 # --- Admin: User Management ---
 if is_admin:
     st.header("User Management (Admin Only)")
@@ -446,4 +560,4 @@ if resp.status_code == 200:
     st.success(f"Backend status: {resp.json().get('status')}")
 else:
     st.error("Backend health check failed.")
-st.markdown("---") 
+st.markdown("---")

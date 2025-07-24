@@ -6,6 +6,8 @@ from langchain_groq import ChatGroq
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from dotenv import load_dotenv
+import functools
+import datetime
 load_dotenv()
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
@@ -31,97 +33,242 @@ def calculate_risk_score(severity, criticality):
     base = {"High": 80, "Medium": 50, "Low": 20}.get(severity, 30)
     return min(100, int(base + 0.2 * criticality))
 
+def generate_fallback_risk_reports(llm_input):
+    """
+    Generate risk reports using a rule-based approach when LLM is unavailable.
+    This serves as a fallback mechanism when the GROQ API is unavailable or the API key is missing.
+
+    Args:
+        llm_input (list): List of input dictionaries, each with 'shipment' and 'disruption' subfields.
+
+    Returns:
+        list: List of structured risk report dictionaries.
+    """
+    if not llm_input:
+        return []
+    
+    def calculate_risk_score(severity_level, criticality_score):
+        severity_weights = {"Low": 30, "Medium": 60, "High": 90}
+        severity_score = severity_weights.get(severity_level, 50)
+        return min(100, round(0.6 * severity_score + 0.4 * criticality_score))
+
+    impact_thresholds = [
+        (80, "Critical"),
+        (60, "High"),
+        (40, "Medium"),
+        (0,  "Low"),
+    ]
+
+    delay_map = {
+        "Strike": {"High": "7-10 days", "Medium": "3-5 days", "Low": "1-2 days"},
+        "Weather": {"High": "5-7 days", "Medium": "2-4 days", "Low": "1 day"},
+        "Port Congestion": {"High": "10-14 days", "Medium": "5-7 days", "Low": "2-3 days"},
+        "Political Unrest": {"High": "14+ days", "Medium": "7-10 days", "Low": "3-5 days"}
+    }
+
+    risk_reports = []
+
+    for item in llm_input:
+        shipment = item.get("shipment", {})
+        disruption = item.get("disruption", {})
+        
+        product_id = shipment.get("product_id", "unknown")
+        criticality = shipment.get("criticality_score", 50)
+        severity = disruption.get("severity", "Medium")
+        event_type = disruption.get("event_type", "Unknown")
+        
+        risk_score = calculate_risk_score(severity, criticality)
+        
+        impact_level = next(
+            level for threshold, level in impact_thresholds if risk_score >= threshold
+        )
+
+        delay_estimate = delay_map.get(event_type, {}).get(severity, "2-5 days")
+        cost_impact = int((risk_score / 100) * criticality * 1000)
+        
+        escalation = (
+            "Notify management and activate contingency plan"
+            if risk_score >= 70 else "None"
+        )
+
+        summary = (
+            f"{event_type} event with {severity} severity affecting shipment {product_id}. "
+            f"Expected delay of {delay_estimate} with estimated cost impact of ${cost_impact}."
+        )
+        
+        risk_reports.append({
+            "product_id": product_id,
+            "risk_score": risk_score,
+            "impact_level": impact_level,
+            "delay_estimate": delay_estimate,
+            "cost_impact": cost_impact,
+            "escalation": escalation,
+            "summary": summary
+        })
+    
+    return risk_reports
+
+
+def detailed_log(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        logging.info(f"[ENTER] {func.__name__} args={args} kwargs={kwargs}")
+        print(f"[ENTER] {func.__name__} args={args} kwargs={kwargs}")
+        try:
+            result = func(*args, **kwargs)
+            logging.info(f"[EXIT] {func.__name__} returned {result}")
+            print(f"[EXIT] {func.__name__} returned {result}")
+            return result
+        except Exception as e:
+            logging.error(f"[ERROR] {func.__name__} exception: {e}", exc_info=True)
+            print(f"[ERROR] {func.__name__} exception: {e}")
+            raise
+    return wrapper
+
+def log_agent(event, **kwargs):
+    ts = datetime.datetime.now().isoformat()
+    print(f"[AGENT] {ts} | {event} | " + " | ".join(f"{k}={v}" for k, v in kwargs.items()))
+
+@detailed_log
 def analyze_risk(disruptions, inventory_path="data/inventory.json", vendors_path="data/vendors.csv"):
-    """
-    Use LLM to calculate risk for each shipment/disruption pair. No manual if/else logic.
-    For every disruption, match all shipments whose route, current_location, or any leg matches the disruption location.
-    """
+    log_agent("analyze_risk_called", disruptions=disruptions)
     if not isinstance(disruptions, list):
         disruptions = [disruptions]
-    if not os.path.exists(inventory_path) or not os.path.exists(vendors_path):
-        logging.warning(f"Missing inventory or vendors file: {inventory_path}, {vendors_path}")
+    
+    # Fix: Look for files in the project root directory
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    inventory_path = os.path.join(project_root, inventory_path) if not os.path.isabs(inventory_path) else inventory_path
+    vendors_path = os.path.join(project_root, vendors_path) if not os.path.isabs(vendors_path) else vendors_path
+    
+    if not os.path.exists(inventory_path):
+        logging.warning(f"Missing inventory file: {inventory_path}")
         return []
-    with open(inventory_path) as f:
-        inventory = json.load(f)
-    vendors = pd.read_csv(vendors_path)
+
+    try:
+        with open(inventory_path) as f:
+            inventory = json.load(f)
+        # Airtable integration for vendors
+        import os
+        airtable_key = os.getenv("AIRTABLE_API_KEY")
+        airtable_base = os.getenv("AIRTABLE_BASE_ID")
+        airtable_table = os.getenv("AIRTABLE_TABLE_NAME")
+        from utils.data_loader import load_vendors
+        if airtable_key and airtable_base and airtable_table:
+            log_agent("using_airtable_for_vendors")
+            vendors = load_vendors(use_airtable=True, airtable_api_key=airtable_key, airtable_base_id=airtable_base, airtable_table_name=airtable_table)
+        else:
+            log_agent("using_csv_for_vendors")
+            import pandas as pd
+            vendors = pd.read_csv(vendors_path)
+    except Exception as e:
+        logging.error(f"Error loading data files: {e}")
+        return []
+
     llm_input = []
     for disruption in disruptions:
         event_loc = disruption.get('location', '').lower()
         for item in inventory:
-            # Match if disruption location is in route, current_location, or any leg (fuzzy, case-insensitive)
-            match = False
-            # Route
-            if 'route' in item and isinstance(item['route'], list):
-                for loc in item['route']:
-                    if event_loc in loc.lower() or loc.lower() in event_loc:
-                        match = True
-                        break
-            # Current location
-            if not match and 'current_location' in item and item['current_location']:
-                cloc = item['current_location'].lower()
-                if event_loc in cloc or cloc in event_loc:
-                    match = True
-            # Legs
-            if not match and 'legs' in item and isinstance(item['legs'], list):
-                for leg in item['legs']:
-                    for key in ['origin', 'destination', 'current_location']:
-                        lloc = leg.get(key)
-                        if lloc and (event_loc in lloc.lower() or lloc.lower() in event_loc):
-                            match = True
-                            break
-                    if match:
-                        break
-            if match:
-                vendor_info = {}
-                if 'vendor_id' in item:
-                    vendor_rows = vendors[vendors['vendor_id'] == item['vendor_id']]
-                    if not vendor_rows.empty:
-                        vendor_info = vendor_rows.iloc[0].to_dict()
+            if _location_matches(event_loc, item):
+                vendor_info = _get_vendor_info(item.get('vendor_id'), vendors)
                 llm_input.append({
                     "shipment": item,
                     "vendor": vendor_info,
                     "disruption": disruption
                 })
+
     if not llm_input:
         return []
-    if GROQ_API_KEY:
-        try:
-            llm_prompt = PromptTemplate(
-                input_variables=["llm_input"],
-                template="""
-You are a supply chain risk analyst AI. For each shipment/disruption/vendor triple below, assess the risk:
-- shipment: dict with product_id, route, current_location, status, etc.
-- vendor: dict with vendor_id, status, location, etc.
-- disruption: dict with event_type, location, severity, etc.
-For each, output a JSON object with:
-- product_id
-- risk_score (0-100)
-- impact_level (Low/Medium/High/Critical)
-- delay_estimate (text)
-- cost_impact (number)
-- escalation (if any)
-- summary (1-2 sentences)
-Input:
+
+    if not GROQ_API_KEY:
+        raise RuntimeError("GROQ_API_KEY not set. LLM-based risk analysis is required.")
+
+    # Log the LLM input
+    log_agent("llm_input_for_risk_analysis", llm_input=llm_input)
+
+    try:
+        llm = ChatGroq(groq_api_key=GROQ_API_KEY, model_name="llama-3.3-70b-versatile")
+        chain = LLMChain(llm=llm, prompt=_get_risk_analysis_prompt())
+        result = chain.run(llm_input=str(llm_input))
+        
+        # Log the LLM raw output
+        log_agent("llm_raw_output_for_risk_analysis", result=result)
+        
+        risk_reports = json.loads(result)
+        if not isinstance(risk_reports, list):
+            raise ValueError("LLM output is not a list")
+            
+        # Validate and fix risk reports
+        for report in risk_reports:
+            if not isinstance(report, dict):
+                continue
+            report['risk_score'] = min(100, max(0, int(report.get('risk_score', 50))))
+            if 'summary' not in report:
+                report['summary'] = f"Risk analysis for product {report.get('product_id', 'unknown')}"
+        
+        log_agent("final_risk_reports", risk_reports=risk_reports)
+        return risk_reports
+    except Exception as e:
+        log_agent("llm_risk_analysis_failed", error=str(e))
+        raise RuntimeError(f"LLM risk analysis failed: {e}")
+
+def _location_matches(event_loc, item):
+    """Check if disruption location matches any shipment location."""
+    # Check route
+    if 'route' in item and isinstance(item['route'], list):
+        if any(event_loc in loc.lower() or loc.lower() in event_loc for loc in item['route']):
+            return True
+    
+    # Check current location
+    if 'current_location' in item and item['current_location']:
+        cloc = item['current_location'].lower()
+        if event_loc in cloc or cloc in event_loc:
+            return True
+    
+    # Check legs
+    if 'legs' in item and isinstance(item['legs'], list):
+        for leg in item['legs']:
+            for key in ['origin', 'destination', 'current_location']:
+                val = leg.get(key)
+                if val is not None:
+                    lloc = str(val).lower()
+                if lloc and (event_loc in lloc or lloc in event_loc):
+                    return True
+    return False
+
+def _get_vendor_info(vendor_id, vendors):
+    """Get vendor information from vendors DataFrame."""
+    if vendor_id is None:
+        return {}
+    vendor_rows = vendors[vendors['vendor_id'] == vendor_id]
+    return vendor_rows.iloc[0].to_dict() if not vendor_rows.empty else {}
+
+def _get_risk_analysis_prompt():
+    """Return the enhanced prompt template for structured supply chain risk analysis."""
+    return PromptTemplate(
+        input_variables=["llm_input"],
+        template="""
+You are an AI supply chain risk analyst. Analyze the following data, which may include information about shipments, disruptions, vendors, or logistics incidents:
+
+Input Data:
 {llm_input}
 
-If the input is empty, output an empty JSON list: []
+For each item in the input, generate a corresponding JSON object with the following fields:
 
-IMPORTANT: Output ONLY valid JSON, with no explanation, markdown, or code block. Do NOT include any text, comments, or formatting outside the JSON.
+- "product_id": Unique product identifier from the item.
+- "risk_score": Integer between 0 and 100, based on severity of the disruption and criticality of the shipment.
+- "impact_level": One of ["Low", "Medium", "High", "Critical"], derived from the risk_score using consistent thresholds.
+- "delay_estimate": Estimated shipping delay in days (integer or range).
+- "cost_impact": Estimated cost impact in USD.
+- "escalation": Escalation action required, or "None" if not needed. Be specific if escalation is necessary (e.g., "Notify VP of Global Ops").
+- "summary": A concise 1–2 sentence explanation summarizing the risk and suggested action focus.
+
+Instructions:
+- Derive values logically from the input context.
+- Use consistent logic to map `risk_score` to `impact_level` (e.g., 0–25=Low, 26–50=Medium, 51–75=High, 76–100=Critical).
+- Focus on realism and actionable insights.
+
+Output Requirements:
+- Output a **JSON array** of the generated objects, one per item.
+- Do **not** include any additional explanation, markdown, or code block—only valid raw JSON.
 """
-            )
-            llm = ChatGroq(groq_api_key=GROQ_API_KEY, model_name="llama-3.3-70b-versatile")
-            chain = LLMChain(llm=llm_prompt, prompt=llm_prompt)
-            result = chain.run(llm_input=str(llm_input))
-            import json as _json
-            try:
-                risk_reports = _json.loads(result)
-            except Exception as e:
-                logging.error(f"LLM did not return valid JSON: {e}. Output: {result}")
-                risk_reports = []
-            return risk_reports
-        except Exception as e:
-            logging.error(f"LLM risk analysis failed, falling back. Error: {e}")
-            return []
-    else:
-        logging.warning("GROQ_API_KEY not set. LLM-based risk analysis will not run.")
-        return [] 
+    )

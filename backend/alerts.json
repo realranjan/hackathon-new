@@ -4,269 +4,6 @@
       "location": "Bangalore Port",
       "event_type": "Strike",
       "severity": "High",
-      "timestamp": "2025-07-24T11:00:20.352262",
-      "source": "Simulated",
-      "mode": "road",
-      "data_source": "simulated"
-    },
-    "risk_report": [],
-    "action_plan": {
-      "new_route": null,
-      "alt_vendor": null,
-      "mitigation_steps": [
-        "Monitor situation",
-        "Contact vendor"
-      ],
-      "notification_text": "No risk detected.",
-      "risk_score": 0,
-      "summary": "No risk detected."
-    }
-  },
-  {
-    "event": {
-      "location": "Bangalore Port",
-      "event_type": "Strike",
-      "severity": "High",
-      "timestamp": "2025-07-24T11:26:42.877736",
-      "source": "Simulated",
-      "mode": "road",
-      "data_source": "simulated"
-    },
-    "risk_report": [],
-    "action_plan": {
-      "new_route": null,
-      "alt_vendor": null,
-      "mitigation_steps": [
-        "Monitor situation",
-        "Contact vendor"
-      ],
-      "notification_text": "No risk detected.",
-      "risk_score": 0,
-      "summary": "No risk detected."
-    }
-  },
-  {
-    "event": {
-      "location": "Bangalore Port",
-      "event_type": "Strike",
-      "severity": "High",
-      "timestamp": "2025-07-24T11:36:44.370834",
-      "source": "Simulated",
-      "mode": "road",
-      "data_source": "simulated"
-    },
-    "risk_report": [],
-    "action_plan": {
-      "new_route": null,
-      "alt_vendor": null,
-      "mitigation_steps": [
-        "Monitor situation",
-        "Contact vendor"
-      ],
-      "notification_text": "No risk detected.",
-      "risk_score": 0,
-      "summary": "No risk detected."
-    }
-  },
-  {
-    "event": {
-      "location": "Hubli",
-      "event_type": "Flood",
-      "severity": "High",
-      "timestamp": "2024-06-10T10:00:00Z",
-      "source": "Simulated",
-      "mode": "road"
-    },
-    "risk_report": [],
-    "action_plan": {
-      "new_route": null,
-      "alt_vendor": null,
-      "mitigation_steps": [
-        "Monitor situation",
-        "Contact vendor"
-      ],
-      "notification_text": "No risk detected.",
-      "risk_score": 0,
-      "summary": "No risk detected."
-    }
-  },
-  {
-    "event": {
-      "location": "Nagpur",
-      "event_type": "Strike",
-      "severity": "Medium",
-      "timestamp": "2024-06-11T12:00:00Z",
-      "source": "Simulated",
-      "mode": "road"
-    },
-    "risk_report": [],
-    "action_plan": {
-      "new_route": null,
-      "alt_vendor": null,
-      "mitigation_steps": [
-        "Monitor situation",
-        "Contact vendor"
-      ],
-      "notification_text": "No risk detected.",
-      "risk_score": 0,
-      "summary": "No risk detected."
-    }
-  },
-  {
-    "event": {
-      "location": "Bangalore Port",
-      "event_type": "Strike",
-      "severity": "High",
-      "timestamp": "2024-06-01T12:00:00Z",
-      "source": "Simulated",
-      "mode": null
-    },
-    "risk_report": [],
-    "action_plan": {
-      "new_route": null,
-      "alt_vendor": null,
-      "mitigation_steps": [
-        "Monitor situation",
-        "Contact vendor"
-      ],
-      "notification_text": "No risk detected.",
-      "risk_score": 0,
-      "summary": "No risk detected."
-    }
-  },
-  {
-    "event": {
-      "location": "Hubli",
-      "event_type": "Flood",
-      "severity": "High",
-      "timestamp": "2024-06-10T10:00:00Z",
-      "source": "Simulated",
-      "mode": "road"
-    },
-    "risk_report": [],
-    "action_plan": {
-      "new_route": null,
-      "alt_vendor": null,
-      "mitigation_steps": [
-        "Monitor situation",
-        "Contact vendor"
-      ],
-      "notification_text": "No risk detected.",
-      "risk_score": 0,
-      "summary": "No risk detected."
-    }
-  },
-  {
-    "event": {
-      "location": "Nagpur",
-      "event_type": "Strike",
-      "severity": "Medium",
-      "timestamp": "2024-06-11T12:00:00Z",
-      "source": "Simulated",
-      "mode": "road"
-    },
-    "risk_report": [],
-    "action_plan": {
-      "new_route": null,
-      "alt_vendor": null,
-      "mitigation_steps": [
-        "Monitor situation",
-        "Contact vendor"
-      ],
-      "notification_text": "No risk detected.",
-      "risk_score": 0,
-      "summary": "No risk detected."
-    }
-  },
-  {
-    "event": {
-      "location": "Bangalore Port",
-      "event_type": "Strike",
-      "severity": "High",
-      "timestamp": "2025-07-24T12:06:22.121594",
-      "source": "Simulated",
-      "mode": "road",
-      "data_source": "simulated"
-    },
-    "risk_report": [],
-    "action_plan": {
-      "new_route": null,
-      "alt_vendor": null,
-      "mitigation_steps": [
-        "Monitor situation",
-        "Contact vendor"
-      ],
-      "notification_text": "No risk detected.",
-      "risk_score": 0,
-      "summary": "No risk detected."
-    }
-  },
-  {
-    "event": {
-      "location": "Bangalore Port",
-      "event_type": "Strike",
-      "severity": "High",
-      "timestamp": "2024-06-01T12:00:00Z",
-      "source": "Simulated",
-      "mode": null
-    },
-    "risk_report": [],
-    "action_plan": []
-  },
-  {
-    "event": {
-      "location": "Bangalore Port",
-      "event_type": "Strike",
-      "severity": "High",
-      "timestamp": "2024-06-01T12:00:00Z",
-      "source": "Simulated",
-      "mode": null
-    },
-    "risk_report": [],
-    "action_plan": []
-  },
-  {
-    "event": {
-      "location": "Bangalore Port",
-      "event_type": "Strike",
-      "severity": "High",
-      "timestamp": "2024-06-01T12:00:00Z",
-      "source": "Simulated",
-      "mode": null
-    },
-    "risk_report": [],
-    "action_plan": []
-  },
-  {
-    "event": {
-      "location": "Bangalore Port",
-      "event_type": "Strike",
-      "severity": "High",
-      "timestamp": "2025-07-24T12:36:41.561164",
-      "source": "Simulated",
-      "mode": "road",
-      "data_source": "simulated"
-    },
-    "risk_report": [],
-    "action_plan": []
-  },
-  {
-    "event": {
-      "location": "Bangalore Port",
-      "event_type": "Strike",
-      "severity": "High",
-      "timestamp": "2024-06-01T12:00:00Z",
-      "source": "Simulated",
-      "mode": null
-    },
-    "risk_report": [],
-    "action_plan": []
-  },
-  {
-    "event": {
-      "location": "Bangalore Port",
-      "event_type": "Strike",
-      "severity": "High",
       "timestamp": "2024-06-01T12:00:00Z",
       "source": "Simulated",
       "mode": null
@@ -312,6 +49,65 @@
   },
   {
     "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2024-06-01T12:00:00Z",
+      "source": "Simulated",
+      "mode": null
+    },
+    "risk_report": [],
+    "action_plan": []
+  },
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2024-06-01T12:00:00Z",
+      "source": "Simulated",
+      "mode": null
+    },
+    "risk_report": [
+      {
+        "product_id": "P1001",
+        "risk_score": 80,
+        "impact_level": "High",
+        "delay_estimate": "2-3 days",
+        "cost_impact": 15000.0,
+        "escalation": [
+          "Notify logistics team",
+          "Explore alternative routes"
+        ],
+        "summary": "The shipment of product P1001 is at high risk due to the strike at Bangalore Port, with an estimated delay of 2-3 days and a potential cost impact of $15,000. Immediate escalation actions are required to mitigate the risk."
+      }
+    ],
+    "action_plan": [
+      {
+        "product_id": "P1001",
+        "recommended_actions": [
+          "Reroute shipment via alternative ports",
+          "Notify vendor of potential delay",
+          "Expedite delivery upon arrival",
+          "Increase monitoring of shipment status"
+        ],
+        "responsible_party": "Logistics team",
+        "priority": "High",
+        "escalation": {
+          "required": true,
+          "actions": [
+            "Notify logistics team",
+            "Explore alternative routes"
+          ],
+          "to_whom": "Operations manager"
+        },
+        "summary": "Immediate action is required to mitigate the high risk of delay and cost impact for product P1001 due to the strike at Bangalore Port. Rerouting the shipment and expediting delivery can help minimize the delay and cost impact.",
+        "risk_score": 80
+      }
+    ]
+  },
+  {
+    "event": {
       "location": "Hubli",
       "event_type": "Flood",
       "severity": "High",
@@ -319,8 +115,54 @@
       "source": "Simulated",
       "mode": "road"
     },
-    "risk_report": [],
-    "action_plan": []
+    "risk_report": [
+      {
+        "product_id": "P1001",
+        "risk_score": 85,
+        "impact_level": "Critical",
+        "delay_estimate": 3,
+        "cost_impact": 10000,
+        "escalation": "Notify VP of Global Ops and initiate contingency planning",
+        "summary": "High-severity flood disruption in Hubli may cause significant delays to critical shipment P1001, requiring immediate escalation and contingency planning."
+      },
+      {
+        "product_id": "P1002",
+        "risk_score": 55,
+        "impact_level": "High",
+        "delay_estimate": 2,
+        "cost_impact": 5000,
+        "escalation": "Notify Logistics Manager and monitor situation closely",
+        "summary": "Medium-severity strike disruption in Nagpur may cause delays to shipment P1002, requiring close monitoring and potential logistics adjustments."
+      }
+    ],
+    "action_plan": [
+      {
+        "product_id": "P1001",
+        "recommended_actions": [
+          "Reroute via Mumbai Port instead of Hubli to avoid flood disruption",
+          "Contact vendors to expedite production and minimize delay",
+          "Initiate contingency planning to identify alternative suppliers"
+        ],
+        "responsible_party": "logistics team",
+        "priority": "High",
+        "escalation": "Escalate to VP of Global Ops",
+        "summary": "Implement immediate contingency planning and rerouting to mitigate delays and costs associated with the flood disruption in Hubli, and escalate to VP of Global Ops for further support.",
+        "risk_score": 85
+      },
+      {
+        "product_id": "P1002",
+        "recommended_actions": [
+          "Monitor strike situation in Nagpur and adjust logistics accordingly",
+          "Identify alternative routes via Pune or Hyderabad to minimize delay",
+          "Negotiate with vendors to absorb potential costs and maintain shipment schedules"
+        ],
+        "responsible_party": "regional supply manager",
+        "priority": "Medium",
+        "escalation": "Escalate to Logistics Manager",
+        "summary": "Closely monitor the strike situation in Nagpur and adjust logistics to minimize delays and costs, with potential escalation to Logistics Manager if situation worsens.",
+        "risk_score": 55
+      }
+    ]
   },
   {
     "event": {
@@ -331,20 +173,420 @@
       "source": "Simulated",
       "mode": "road"
     },
-    "risk_report": [],
-    "action_plan": []
+    "risk_report": [
+      {
+        "product_id": "P1001",
+        "risk_score": 85,
+        "impact_level": "Critical",
+        "delay_estimate": 3,
+        "cost_impact": 10000,
+        "escalation": "Notify VP of Global Ops and initiate contingency planning",
+        "summary": "High-severity flood disruption in Hubli may cause significant delays to critical shipment P1001, requiring immediate escalation and contingency planning."
+      },
+      {
+        "product_id": "P1002",
+        "risk_score": 55,
+        "impact_level": "High",
+        "delay_estimate": 2,
+        "cost_impact": 5000,
+        "escalation": "Notify Logistics Manager and monitor situation closely",
+        "summary": "Medium-severity strike disruption in Nagpur may cause delays to shipment P1002, requiring close monitoring and potential logistics adjustments."
+      }
+    ],
+    "action_plan": [
+      {
+        "product_id": "P1001",
+        "recommended_actions": [
+          "Reroute via Mumbai Port instead of Hubli to avoid flood disruption",
+          "Contact vendors to expedite production and minimize delay",
+          "Initiate contingency planning to identify alternative suppliers"
+        ],
+        "responsible_party": "logistics team",
+        "priority": "High",
+        "escalation": "Escalate to VP of Global Ops",
+        "summary": "Implement immediate contingency planning and rerouting to mitigate delays and costs associated with the flood disruption in Hubli, and escalate to VP of Global Ops for further support.",
+        "risk_score": 85
+      },
+      {
+        "product_id": "P1002",
+        "recommended_actions": [
+          "Monitor strike situation in Nagpur and adjust logistics accordingly",
+          "Identify alternative routes via Pune or Hyderabad to minimize delay",
+          "Negotiate with vendors to absorb potential costs and maintain shipment schedules"
+        ],
+        "responsible_party": "regional supply manager",
+        "priority": "Medium",
+        "escalation": "Escalate to Logistics Manager",
+        "summary": "Closely monitor the strike situation in Nagpur and adjust logistics to minimize delays and costs, with potential escalation to Logistics Manager if situation worsens.",
+        "risk_score": 55
+      }
+    ]
+  },
+  {
+    "event": {
+      "location": "Pune",
+      "event_type": "Flood",
+      "severity": "High",
+      "timestamp": "2025-07-24T23:15:13Z",
+      "source": "Simulated",
+      "mode": "road"
+    },
+    "risk_report": [
+      {
+        "product_id": "P1001",
+        "risk_score": 85,
+        "impact_level": "Critical",
+        "delay_estimate": "3-5 days",
+        "cost_impact": "10000",
+        "escalation": "Notify VP of Global Ops and activate contingency planning",
+        "summary": "High-severity flood disruption in Pune may significantly delay the critical shipment of product P1001, requiring immediate escalation and contingency planning to mitigate potential losses."
+      }
+    ],
+    "action_plan": [
+      {
+        "product_id": "P1001",
+        "recommended_actions": [
+          "Activate contingency planning to expedite shipment via alternative routes",
+          "Reroute via Chennai Port instead of affected areas in Pune to minimize delay",
+          "Negotiate with vendors for potential cost reductions or discounts due to unforeseen circumstances"
+        ],
+        "responsible_party": "logistics team",
+        "priority": "High",
+        "escalation": "Escalate to VP of Global Ops",
+        "summary": "Implement immediate contingency planning and rerouting to mitigate the high-severity flood disruption in Pune, aiming to minimize the 3-5 day delay and $10,000 cost impact on product P1001 shipment.",
+        "risk_score": 85
+      }
+    ]
   },
   {
     "event": {
       "location": "Bangalore Port",
       "event_type": "Strike",
       "severity": "High",
-      "timestamp": "2025-07-24T13:07:29.699113",
+      "timestamp": "2025-07-24T18:18:19.339401",
       "source": "Simulated",
       "mode": "road",
       "data_source": "simulated"
     },
-    "risk_report": [],
-    "action_plan": []
+    "risk_report": [
+      {
+        "product_id": "P1001",
+        "risk_score": 85,
+        "impact_level": "Critical",
+        "delay_estimate": 3,
+        "cost_impact": 10000,
+        "escalation": "Notify VP of Global Ops and Expedite Shipment via Alternative Route",
+        "summary": "The shipment of product P1001 is at critical risk due to a high-severity strike at Bangalore Port, requiring immediate escalation and potential re-routing to avoid significant delays and cost impacts."
+      }
+    ],
+    "action_plan": [
+      {
+        "product_id": "P1001",
+        "recommended_actions": [
+          "Reroute via Chennai Port instead of Bangalore Port",
+          "Work with the shipping vendor to expedite the shipment",
+          "Explore air freight as an alternative to minimize delay"
+        ],
+        "responsible_party": "logistics team",
+        "priority": "High",
+        "escalation": "Escalate to VP of Global Ops",
+        "summary": "Reroute the shipment of product P1001 via Chennai Port and expedite the shipment to minimize delay and cost impact. This will require close collaboration with the shipping vendor and potentially exploring air freight options.",
+        "risk_score": 85
+      }
+    ]
+  },
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2025-07-24T18:28:19.392582",
+      "source": "Simulated",
+      "mode": "road",
+      "data_source": "simulated"
+    },
+    "risk_report": [
+      {
+        "product_id": "P1001",
+        "risk_score": 85,
+        "impact_level": "Critical",
+        "delay_estimate": "3-5 days",
+        "cost_impact": "10000",
+        "escalation": "Notify VP of Global Ops and activate contingency plan",
+        "summary": "The shipment of product P1001 is at critical risk due to a high-severity strike at Bangalore Port, necessitating immediate escalation and contingency planning to mitigate potential delays and cost impacts."
+      }
+    ],
+    "action_plan": [
+      {
+        "product_id": "P1001",
+        "recommended_actions": [
+          "Reroute via Chennai Port instead of Bangalore Port to avoid strike delays",
+          "Negotiate with vendors for potential cost reductions or discounts due to unforeseen circumstances",
+          "Activate contingency planning to expedite shipments via alternative routes or means"
+        ],
+        "responsible_party": "logistics team",
+        "priority": "High",
+        "escalation": "Escalate to VP of Global Ops",
+        "summary": "Immediate action is required to mitigate the high-severity strike at Bangalore Port by rerouting shipments and activating contingency plans to minimize delays and cost impacts.",
+        "risk_score": 85
+      }
+    ]
+  },
+  {
+    "event": {
+      "location": "Bangalore",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2025-07-25T00:09:48Z",
+      "source": "Simulated",
+      "mode": null
+    },
+    "risk_report": [
+      {
+        "product_id": "P1001",
+        "risk_score": 85,
+        "impact_level": "Critical",
+        "delay_estimate": 3,
+        "cost_impact": 10000,
+        "escalation": "Notify VP of Global Ops and engage crisis management team",
+        "summary": "The shipment of product P1001 is at critical risk due to a high-severity strike in Bangalore, requiring immediate escalation and crisis management. The estimated delay is 3 days with a potential cost impact of $10,000."
+      }
+    ],
+    "action_plan": [
+      {
+        "product_id": "P1001",
+        "recommended_actions": [
+          "Reroute via Chennai Port instead of Bangalore Port to avoid the strike",
+          "Engage with local logistics teams to secure alternative transportation options",
+          "Negotiate with the vendor for potential expedited shipping options"
+        ],
+        "responsible_party": "logistics team",
+        "priority": "High",
+        "escalation": "Escalate to VP of Global Ops and engage crisis management team",
+        "summary": "Reroute the shipment of product P1001 via Chennai Port and engage local logistics teams to mitigate the strike's impact, with immediate escalation to VP of Global Ops and the crisis management team.",
+        "risk_score": 85
+      }
+    ]
+  },
+  {
+    "event": {
+      "location": "Bangalore",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2025-07-25T00:19:51Z",
+      "source": "Simulated",
+      "mode": null
+    },
+    "risk_report": [
+      {
+        "product_id": "P1001",
+        "risk_score": 85,
+        "impact_level": "High",
+        "delay_estimate": 3,
+        "cost_impact": 10000,
+        "escalation": "Notify VP of Global Ops",
+        "summary": "A high-severity strike in Bangalore may cause significant delays to the shipment of product P1001, prompting immediate escalation to mitigate potential losses."
+      }
+    ],
+    "action_plan": [
+      {
+        "product_id": "P1001",
+        "recommended_actions": [
+          "Reroute via Chennai Port instead of Bangalore Port to minimize delay",
+          "Engage with local authorities to negotiate with striking parties",
+          "Identify and prioritize critical shipments for expedited handling"
+        ],
+        "responsible_party": "logistics team",
+        "priority": "High",
+        "escalation": "Escalate to Regional Ops Director and Notify VP of Global Ops",
+        "summary": "Reroute shipments through Chennai Port and negotiate with striking parties to minimize delays and mitigate potential losses, with immediate escalation to Regional Ops Director and VP of Global Ops.",
+        "risk_score": 85
+      }
+    ]
+  },
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2025-07-24T18:58:30.675824",
+      "source": "Simulated",
+      "mode": "road",
+      "data_source": "simulated"
+    },
+    "risk_report": [
+      {
+        "product_id": "P1001",
+        "risk_score": 85,
+        "impact_level": "Critical",
+        "delay_estimate": "3-5 days",
+        "cost_impact": "10000",
+        "escalation": "Notify VP of Global Ops and engage logistics team to re-route shipment",
+        "summary": "The shipment of product P1001 is at critical risk due to a high-severity strike at Bangalore Port, requiring immediate escalation and re-routing to minimize delay and cost impact."
+      }
+    ],
+    "action_plan": [
+      {
+        "product_id": "P1001",
+        "recommended_actions": [
+          "Reroute via Chennai Port instead of Bangalore Port",
+          "Engage with local logistics teams to expedite customs clearance",
+          "Consider airlift for time-sensitive components"
+        ],
+        "responsible_party": "logistics team",
+        "priority": "High",
+        "escalation": "Escalate to VP of Global Ops",
+        "summary": "Reroute the shipment of P1001 via Chennai Port and engage local logistics teams to minimize delay, with escalation to VP of Global Ops to oversee the re-routing and ensure timely delivery.",
+        "risk_score": 85
+      }
+    ]
+  },
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2025-07-24T19:19:50.665224",
+      "source": "Simulated",
+      "mode": "road",
+      "data_source": "simulated"
+    },
+    "risk_report": [
+      {
+        "product_id": "P1001",
+        "risk_score": 85,
+        "impact_level": "Critical",
+        "delay_estimate": "3-5 days",
+        "cost_impact": "10000-15000",
+        "escalation": "Notify VP of Global Ops and engage with Vendor_001 to explore alternative routes",
+        "summary": "A high-severity strike at Bangalore Port may significantly delay the shipment of P1001, necessitating immediate escalation and exploration of alternative routes to mitigate the impact."
+      }
+    ],
+    "action_plan": [
+      {
+        "product_id": "P1001",
+        "recommended_actions": [
+          "Reroute via Chennai Port instead of Bangalore Port to minimize delay",
+          "Engage with Vendor_001 to explore alternative logistics paths",
+          "Consider air freight as a backup option to expedite shipment"
+        ],
+        "responsible_party": "logistics team",
+        "priority": "High",
+        "escalation": "Escalate to VP of Global Ops",
+        "summary": "Mitigate the impact of the Bangalore Port strike by rerouting via Chennai Port and exploring alternative logistics paths with Vendor_001, with escalation to VP of Global Ops for oversight.",
+        "risk_score": 85
+      }
+    ]
+  },
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2025-07-24T19:29:50.969686",
+      "source": "Simulated",
+      "mode": "road",
+      "data_source": "simulated"
+    },
+    "risk_report": [
+      {
+        "product_id": "P1001",
+        "risk_score": 85,
+        "impact_level": "Critical",
+        "delay_estimate": "3-5 days",
+        "cost_impact": "10000 USD",
+        "escalation": "Notify VP of Global Ops and consider air freight as an alternative",
+        "summary": "The shipment of product P1001 is at critical risk due to a high-severity strike at Bangalore Port, requiring immediate escalation and potential rerouting to minimize delays and cost impacts."
+      }
+    ],
+    "action_plan": [
+      {
+        "product_id": "P1001",
+        "recommended_actions": [
+          "Reroute via Chennai Port instead of Bangalore Port to minimize delay",
+          "Consider air freight as an alternative to reduce delay_estimate",
+          "Negotiate with vendors for potential cost reduction or compensation"
+        ],
+        "responsible_party": "logistics team",
+        "priority": "High",
+        "escalation": "Escalate to VP of Global Ops",
+        "summary": "Reroute the shipment of product P1001 via Chennai Port and consider air freight to minimize delays and cost impacts, with immediate escalation to VP of Global Ops.",
+        "risk_score": 85
+      }
+    ]
+  },
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2025-07-24T19:39:50.709789",
+      "source": "Simulated",
+      "mode": "road",
+      "data_source": "simulated"
+    },
+    "risk_report": [
+      {
+        "product_id": "P1001",
+        "risk_score": 85,
+        "impact_level": "Critical",
+        "delay_estimate": 3,
+        "cost_impact": 10000,
+        "escalation": "Notify VP of Global Ops and engage crisis management team",
+        "summary": "The shipment of product P1001 is at critical risk due to a high-severity strike at Bangalore Port, requiring immediate escalation and crisis management to mitigate delays and cost impacts."
+      }
+    ],
+    "action_plan": [
+      {
+        "product_id": "P1001",
+        "recommended_actions": [
+          "Reroute via Chennai Port instead of Bangalore Port to minimize delay",
+          "Negotiate with vendors for expedited shipping to reduce delay_estimate",
+          "Explore air freight as an alternative to reduce delay_estimate"
+        ],
+        "responsible_party": "logistics team",
+        "priority": "High",
+        "escalation": "Escalate to VP of Global Ops and engage crisis management team",
+        "summary": "Implement immediate rerouting and expedited shipping measures to mitigate the critical risk of shipment delay for product P1001, and escalate the issue to VP of Global Ops for crisis management.",
+        "risk_score": 85
+      }
+    ]
+  },
+  {
+    "event": {
+      "location": "Bangalore Port",
+      "event_type": "Strike",
+      "severity": "High",
+      "timestamp": "2025-07-24T19:49:48.634447",
+      "source": "Simulated",
+      "mode": "road",
+      "data_source": "simulated"
+    },
+    "risk_report": [
+      {
+        "product_id": "P1001",
+        "risk_score": 85,
+        "impact_level": "Critical",
+        "delay_estimate": "3-5 days",
+        "cost_impact": 10000,
+        "escalation": "Notify VP of Global Ops and engage crisis management team",
+        "summary": "A high-severity strike at Bangalore Port poses a critical risk to the shipment of product P1001, requiring immediate escalation and crisis management to mitigate potential delays and cost impacts."
+      }
+    ],
+    "action_plan": [
+      {
+        "product_id": "P1001",
+        "recommended_actions": [
+          "Reroute via Chennai Port instead of Bangalore Port to avoid strike-related delays",
+          "Engage with local freight forwarders to secure priority loading and unloading",
+          "Activate contingency contracts with secondary vendors to ensure supply continuity"
+        ],
+        "responsible_party": "logistics team",
+        "priority": "High",
+        "escalation": "Escalate to VP of Global Ops and notify crisis management team",
+        "summary": "Mitigate the high-severity strike at Bangalore Port by rerouting product P1001 via Chennai Port and engaging local freight forwarders, while escalating the issue to VP of Global Ops and activating crisis management protocols.",
+        "risk_score": 85
+      }
+    ]
   }
 ]

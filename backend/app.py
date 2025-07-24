@@ -12,9 +12,14 @@ from routes.admin import admin_router
 from logging_config import setup_logging
 from middleware import add_middlewares
 from fastapi.openapi.utils import get_openapi
+import logging
+from slowapi.extension import Limiter as SlowAPILimiter
+from fastapi import Depends
+from routes.integrations import integrations_router
 
-limiter = Limiter(key_func=get_remote_address, default_limits=["100/hour"])
+limiter = Limiter(key_func=get_remote_address, default_limits=["10/minute", "100/hour"])
 app = FastAPI()
+print("[APP] FastAPI app instance created.")
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 app.add_middleware(
@@ -26,17 +31,28 @@ app.add_middleware(
 )
 
 setup_logging()
+print("[APP] Logging configured.")
 add_middlewares(app)
+print("[APP] Custom middlewares added.")
 
 app.include_router(auth_router)
+print("[APP] Auth router included.")
 app.include_router(shipment_router)
+print("[APP] Shipment router included.")
 app.include_router(disruption_router)
+print("[APP] Disruption router included.")
 app.include_router(health_router)
+print("[APP] Health router included.")
 app.include_router(admin_router)
+print("[APP] Admin router included.")
+app.include_router(integrations_router)
+print("[APP] Integrations router included.")
 
 start_scheduler()
+print("[APP] Scheduler started.")
 
 def custom_openapi():
+    print("[APP] Generating custom OpenAPI schema.")
     if app.openapi_schema:
         return app.openapi_schema
     openapi_schema = get_openapi(
@@ -59,3 +75,10 @@ def custom_openapi():
     app.openapi_schema = openapi_schema
     return app.openapi_schema
 app.openapi = custom_openapi 
+
+# Example: Add per-endpoint rate limiting
+@health_router.get("/limited_healthz")
+@limiter.limit("5/minute")
+async def limited_healthz(request):
+    print("[API] /limited_healthz endpoint called (rate limited)")
+    return {"status": "ok (rate limited)"} 

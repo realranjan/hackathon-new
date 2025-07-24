@@ -18,6 +18,7 @@ async def list_users(
     page_size: int = Query(20, ge=1, le=100),
     search: str = Query(None)
 ):
+    print("[API] /admin/users/ called")
     pool = await get_mysql_pool()
     offset = (page - 1) * page_size
     base_query = "SELECT id, email, role, is_active, is_superuser, is_verified FROM user"
@@ -43,6 +44,7 @@ async def list_users(
 
 @admin_router.post("/admin/user/update/")
 async def update_user(user_id: int = Body(...), role: Optional[str] = Body(None), is_active: Optional[bool] = Body(None), is_verified: Optional[bool] = Body(None), actor=Depends(get_current_user_role("admin"))):
+    print(f"[API] /admin/user/update/ called for user_id={user_id}")
     pool = await get_mysql_pool()
     updates = []
     params = []
@@ -75,6 +77,7 @@ async def update_user(user_id: int = Body(...), role: Optional[str] = Body(None)
 
 @admin_router.post("/admin/user/delete/")
 async def delete_user(user_id: int = Body(...), actor=Depends(get_current_user_role("admin"))):
+    print(f"[API] /admin/user/delete/ called for user_id={user_id}")
     pool = await get_mysql_pool()
     # Prevent deleting the last admin
     async with pool.acquire() as conn:
@@ -105,6 +108,7 @@ async def delete_user(user_id: int = Body(...), actor=Depends(get_current_user_r
 
 @admin_router.get("/admin/audit_log/")
 async def get_audit_log(user=Depends(get_current_user_role("admin"))):
+    print("[API] /admin/audit_log/ called")
     if os.path.exists(AUDIT_LOG_FILE):
         with open(AUDIT_LOG_FILE, "r") as f:
             log = json.load(f)

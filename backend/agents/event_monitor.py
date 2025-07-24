@@ -4,6 +4,9 @@ import httpx
 import logging
 import tweepy
 import time
+import random
+import os
+import json
 
 API_KEYS = get_api_keys()
 REQUIRED_KEYS = ["NEWSAPI_KEY", "WEATHERSTACK_KEY", "TWITTER_API_KEY", "TWITTER_API_SECRET"]
@@ -23,8 +26,12 @@ DISRUPTION_KEYWORDS = [
 logging.basicConfig(level=logging.INFO)
 
 async def fetch_news_events(location="India"):
+    api_key = API_KEYS.get("NEWSAPI_KEY")
+    if not api_key:
+        logging.warning("Missing NEWSAPI_KEY.")
+        return []
     params = {
-        "apiKey": API_KEYS["NEWSAPI_KEY"],
+        "apiKey": api_key,
         "q": " OR ".join(DISRUPTION_KEYWORDS),
         "language": "en",
         "pageSize": 5,
@@ -57,8 +64,12 @@ async def fetch_news_events(location="India"):
     return []
 
 async def fetch_weather_events(location="Bangalore"):
+    api_key = API_KEYS.get("WEATHERSTACK_KEY")
+    if not api_key:
+        logging.warning("Missing WEATHERSTACK_KEY.")
+        return []
     params = {
-        "access_key": API_KEYS["WEATHERSTACK_KEY"],
+        "access_key": api_key,
         "query": location
     }
     try:
@@ -89,6 +100,7 @@ def fetch_twitter_events(query="port OR strike OR closure OR disaster", location
     api_key = API_KEYS.get("TWITTER_API_KEY")
     api_secret = API_KEYS.get("TWITTER_API_SECRET")
     if not api_key or not api_secret:
+        logging.warning("Missing TWITTER_API_KEY or TWITTER_API_SECRET.")
         return []
     try:
         auth = tweepy.AppAuthHandler(api_key, api_secret)
@@ -212,37 +224,70 @@ async def fetch_road_events(location="India"):
 
 # Update fetch_or_simulate_events to use new agents
 
-def fetch_or_simulate_events():
-    import asyncio
+async def fetch_or_simulate_events():
     events = []
     try:
-        air_events = asyncio.run(fetch_air_events())
+        air_events = await fetch_air_events()
         if air_events:
             events.extend(air_events)
     except Exception as e:
         logging.error(f"Air fetch failed: {e}")
     try:
-        sea_events = asyncio.run(fetch_sea_events())
+        sea_events = await fetch_sea_events()
         if sea_events:
             events.extend(sea_events)
     except Exception as e:
         logging.error(f"Sea fetch failed: {e}")
     try:
-        road_events = asyncio.run(fetch_road_events())
+        road_events = await fetch_road_events()
         if road_events:
             events.extend(road_events)
     except Exception as e:
         logging.error(f"Road fetch failed: {e}")
     if not events:
         logging.info("No real events found, using simulation.")
+        # --- Dynamic simulation logic ---
+        # Load inventory to get possible locations
+        try:
+            inventory_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "data", "inventory.json")
+            with open(inventory_path) as f:
+                inventory = json.load(f)
+            # Gather all unique locations from routes, origins, destinations, and legs
+            locations = set()
+            for item in inventory:
+                if 'route' in item:
+                    locations.update(item['route'])
+                if 'shipping_origin' in item:
+                    locations.add(item['shipping_origin'])
+                if 'destination' in item:
+                    locations.add(item['destination'])
+                if 'legs' in item:
+                    for leg in item['legs']:
+                        for key in ['origin', 'destination', 'current_location']:
+                            val = leg.get(key)
+                            if val:
+                                locations.add(val)
+            locations = list(locations)
+        except Exception as e:
+            logging.error(f"Failed to load inventory for simulation: {e}")
+            locations = ["Bangalore", "Chennai", "Mumbai", "Delhi", "Pune", "Hyderabad", "Kolkata"]
+        # Define possible event types
+        event_types = ["Strike", "Flood", "Protest", "Port Congestion", "Political Unrest", "Weather"]
+        # Randomly select location and event type
+        sim_location = random.choice(locations) if locations else "Bangalore"
+        sim_event_type = random.choice(event_types)
         event_payload = {
-            "location": "Bangalore Port",
-            "event_type": "Strike",
-            "severity": "High",
+            "location": sim_location,
+            "event_type": sim_event_type,
+            "severity": random.choice(["High", "Medium", "Low"]),
             "timestamp": datetime.datetime.utcnow().isoformat(),
             "source": "Simulated",
             "mode": "road",
             "data_source": "simulated"
         }
         return [event_payload]
-    return events 
+    return events
+
+def fetch_or_simulate_events_sync():
+    import asyncio
+    return asyncio.run(fetch_or_simulate_events()) 
