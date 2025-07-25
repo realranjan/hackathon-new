@@ -9049,3 +9049,186 @@ postgrest.exceptions.APIError: {'message': 'JSON object requested, multiple (or 
 {"time": "2025-07-25 23:19:59,216", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "34", "message": "[RESPONSE] 1753465797.6051025-GET-http://localhost:8000/healthz status=200"}
 {"time": "2025-07-25 23:19:59,229", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "34", "message": "[RESPONSE] 1753465797.6091917-GET-http://localhost:8000/analytics/port_performance/ status=200"}
 {"time": "2025-07-25 23:19:59,235", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "34", "message": "[RESPONSE] 1753465797.61335-GET-http://localhost:8000/analytics/risk_trends/ status=200"}
+{"time": "2025-07-25 23:20:55,417", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "28", "message": "[REQUEST] 1753465855.417856-GET-http://localhost:8000/analytics/kpis/ path=/analytics/kpis/ query= headers={'host': 'localhost:8000', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'en-US,en;q=0.9'}"}
+{"time": "2025-07-25 23:20:55,420", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "31", "message": "[REQUEST BODY] 1753465855.417856-GET-http://localhost:8000/analytics/kpis/ body="}
+{"time": "2025-07-25 23:20:55,422", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "12", "message": "Request: GET http://localhost:8000/analytics/kpis/"}
+{"time": "2025-07-25 23:20:55,423", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "28", "message": "[REQUEST] 1753465855.4238257-GET-http://localhost:8000/analytics/risk_trends/ path=/analytics/risk_trends/ query= headers={'host': 'localhost:8000', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'en-US,en;q=0.9'}"}
+{"time": "2025-07-25 23:20:55,425", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "31", "message": "[REQUEST BODY] 1753465855.4238257-GET-http://localhost:8000/analytics/risk_trends/ body="}
+{"time": "2025-07-25 23:20:57,867", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/analytics_metrics?select=cost_savings&order=timestamp.desc&limit=1 "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:20:58,239", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/shipment?select=%2A&status=eq.in-transit "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:20:58,606", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/alerts?select=%2A "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:20:58,933", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/analytics_metrics?select=on_time_delivery&order=timestamp.desc&limit=1 "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:20:58,936", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "12", "message": "Request: GET http://localhost:8000/analytics/risk_trends/"}
+{"time": "2025-07-25 23:20:58,939", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "28", "message": "[REQUEST] 1753465858.9391506-GET-http://localhost:8000/healthz path=/healthz query= headers={'host': 'localhost:8000', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'en-US,en;q=0.9'}"}
+{"time": "2025-07-25 23:20:58,942", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "31", "message": "[REQUEST BODY] 1753465858.9391506-GET-http://localhost:8000/healthz body="}
+{"time": "2025-07-25 23:20:58,944", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "28", "message": "[REQUEST] 1753465858.9441652-GET-http://localhost:8000/alerts/ path=/alerts/ query= headers={'host': 'localhost:8000', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'en-US,en;q=0.9'}"}
+{"time": "2025-07-25 23:20:58,947", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "31", "message": "[REQUEST BODY] 1753465858.9441652-GET-http://localhost:8000/alerts/ body="}
+{"time": "2025-07-25 23:20:58,950", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "28", "message": "[REQUEST] 1753465858.949744-GET-http://localhost:8000/analytics/port_performance/ path=/analytics/port_performance/ query= headers={'host': 'localhost:8000', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'en-US,en;q=0.9'}"}
+{"time": "2025-07-25 23:20:58,952", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "31", "message": "[REQUEST BODY] 1753465858.949744-GET-http://localhost:8000/analytics/port_performance/ body="}
+{"time": "2025-07-25 23:20:59,321", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/risk_trends?select=%2A&order=timestamp.desc "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:20:59,324", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "12", "message": "Request: GET http://localhost:8000/healthz"}
+{"time": "2025-07-25 23:20:59,326", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "12", "message": "Request: GET http://localhost:8000/alerts/"}
+{"time": "2025-07-25 23:20:59,329", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "12", "message": "Request: GET http://localhost:8000/analytics/port_performance/"}
+{"time": "2025-07-25 23:20:59,333", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "16", "message": "Response: 200 GET http://localhost:8000/analytics/kpis/"}
+{"time": "2025-07-25 23:20:59,906", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/alerts?select=%2A&order=id.desc "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:21:00,299", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/port_performance?select=%2A&order=timestamp.desc "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:21:00,302", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "16", "message": "Response: 200 GET http://localhost:8000/analytics/risk_trends/"}
+{"time": "2025-07-25 23:21:00,305", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "34", "message": "[RESPONSE] 1753465855.417856-GET-http://localhost:8000/analytics/kpis/ status=200"}
+{"time": "2025-07-25 23:21:00,309", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "16", "message": "Response: 200 GET http://localhost:8000/healthz"}
+{"time": "2025-07-25 23:21:00,311", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "16", "message": "Response: 200 GET http://localhost:8000/alerts/"}
+{"time": "2025-07-25 23:21:00,313", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "16", "message": "Response: 200 GET http://localhost:8000/analytics/port_performance/"}
+{"time": "2025-07-25 23:21:00,315", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "34", "message": "[RESPONSE] 1753465855.4238257-GET-http://localhost:8000/analytics/risk_trends/ status=200"}
+{"time": "2025-07-25 23:21:00,319", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "34", "message": "[RESPONSE] 1753465858.9391506-GET-http://localhost:8000/healthz status=200"}
+{"time": "2025-07-25 23:21:00,322", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "34", "message": "[RESPONSE] 1753465858.9441652-GET-http://localhost:8000/alerts/ status=200"}
+{"time": "2025-07-25 23:21:00,326", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "34", "message": "[RESPONSE] 1753465858.949744-GET-http://localhost:8000/analytics/port_performance/ status=200"}
+{"time": "2025-07-25 23:21:55,112", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "28", "message": "[REQUEST] 1753465915.1122067-GET-http://localhost:8000/analytics/kpis/ path=/analytics/kpis/ query= headers={'host': 'localhost:8000', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'en-US,en;q=0.9'}"}
+{"time": "2025-07-25 23:21:55,116", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "31", "message": "[REQUEST BODY] 1753465915.1122067-GET-http://localhost:8000/analytics/kpis/ body="}
+{"time": "2025-07-25 23:21:55,120", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "12", "message": "Request: GET http://localhost:8000/analytics/kpis/"}
+{"time": "2025-07-25 23:21:55,763", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/analytics_metrics?select=cost_savings&order=timestamp.desc&limit=1 "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:21:56,104", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/shipment?select=%2A&status=eq.in-transit "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:21:56,561", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/alerts?select=%2A "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:21:56,960", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/analytics_metrics?select=on_time_delivery&order=timestamp.desc&limit=1 "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:21:56,963", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "16", "message": "Response: 200 GET http://localhost:8000/analytics/kpis/"}
+{"time": "2025-07-25 23:21:56,967", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "34", "message": "[RESPONSE] 1753465915.1122067-GET-http://localhost:8000/analytics/kpis/ status=200"}
+{"time": "2025-07-25 23:21:56,971", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "28", "message": "[REQUEST] 1753465916.9706614-GET-http://localhost:8000/analytics/port_performance/ path=/analytics/port_performance/ query= headers={'host': 'localhost:8000', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'en-US,en;q=0.9'}"}
+{"time": "2025-07-25 23:21:56,973", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "31", "message": "[REQUEST BODY] 1753465916.9706614-GET-http://localhost:8000/analytics/port_performance/ body="}
+{"time": "2025-07-25 23:21:56,975", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "28", "message": "[REQUEST] 1753465916.9756696-GET-http://localhost:8000/analytics/risk_trends/ path=/analytics/risk_trends/ query= headers={'host': 'localhost:8000', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'en-US,en;q=0.9'}"}
+{"time": "2025-07-25 23:21:56,976", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "31", "message": "[REQUEST BODY] 1753465916.9756696-GET-http://localhost:8000/analytics/risk_trends/ body="}
+{"time": "2025-07-25 23:21:56,978", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "28", "message": "[REQUEST] 1753465916.9776707-GET-http://localhost:8000/healthz path=/healthz query= headers={'host': 'localhost:8000', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'en-US,en;q=0.9'}"}
+{"time": "2025-07-25 23:21:56,979", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "31", "message": "[REQUEST BODY] 1753465916.9776707-GET-http://localhost:8000/healthz body="}
+{"time": "2025-07-25 23:21:56,981", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "28", "message": "[REQUEST] 1753465916.9816864-GET-http://localhost:8000/alerts/ path=/alerts/ query= headers={'host': 'localhost:8000', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'en-US,en;q=0.9'}"}
+{"time": "2025-07-25 23:21:56,982", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "31", "message": "[REQUEST BODY] 1753465916.9816864-GET-http://localhost:8000/alerts/ body="}
+{"time": "2025-07-25 23:21:56,984", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "12", "message": "Request: GET http://localhost:8000/analytics/port_performance/"}
+{"time": "2025-07-25 23:21:56,986", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "12", "message": "Request: GET http://localhost:8000/analytics/risk_trends/"}
+{"time": "2025-07-25 23:21:56,989", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "12", "message": "Request: GET http://localhost:8000/healthz"}
+{"time": "2025-07-25 23:21:56,989", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "12", "message": "Request: GET http://localhost:8000/alerts/"}
+{"time": "2025-07-25 23:21:57,330", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/port_performance?select=%2A&order=timestamp.desc "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:21:57,931", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/risk_trends?select=%2A&order=timestamp.desc "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:21:58,562", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/alerts?select=%2A&order=id.desc "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:21:58,616", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "16", "message": "Response: 200 GET http://localhost:8000/analytics/port_performance/"}
+{"time": "2025-07-25 23:21:58,619", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "16", "message": "Response: 200 GET http://localhost:8000/analytics/risk_trends/"}
+{"time": "2025-07-25 23:21:58,622", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "16", "message": "Response: 200 GET http://localhost:8000/healthz"}
+{"time": "2025-07-25 23:21:58,624", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "16", "message": "Response: 200 GET http://localhost:8000/alerts/"}
+{"time": "2025-07-25 23:21:58,625", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "34", "message": "[RESPONSE] 1753465916.9706614-GET-http://localhost:8000/analytics/port_performance/ status=200"}
+{"time": "2025-07-25 23:21:58,627", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "34", "message": "[RESPONSE] 1753465916.9756696-GET-http://localhost:8000/analytics/risk_trends/ status=200"}
+{"time": "2025-07-25 23:21:58,629", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "34", "message": "[RESPONSE] 1753465916.9776707-GET-http://localhost:8000/healthz status=200"}
+{"time": "2025-07-25 23:21:58,632", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "34", "message": "[RESPONSE] 1753465916.9816864-GET-http://localhost:8000/alerts/ status=200"}
+{"time": "2025-07-25 23:22:55,423", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "28", "message": "[REQUEST] 1753465975.422852-GET-http://localhost:8000/analytics/kpis/ path=/analytics/kpis/ query= headers={'host': 'localhost:8000', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'en-US,en;q=0.9'}"}
+{"time": "2025-07-25 23:22:55,425", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "31", "message": "[REQUEST BODY] 1753465975.422852-GET-http://localhost:8000/analytics/kpis/ body="}
+{"time": "2025-07-25 23:22:55,428", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "12", "message": "Request: GET http://localhost:8000/analytics/kpis/"}
+{"time": "2025-07-25 23:22:59,463", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/analytics_metrics?select=cost_savings&order=timestamp.desc&limit=1 "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:23:01,209", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/shipment?select=%2A&status=eq.in-transit "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:23:02,963", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/alerts?select=%2A "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:23:04,490", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/analytics_metrics?select=on_time_delivery&order=timestamp.desc&limit=1 "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:23:04,494", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "28", "message": "[REQUEST] 1753465984.494866-GET-http://localhost:8000/alerts/ path=/alerts/ query= headers={'host': 'localhost:8000', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'en-US,en;q=0.9'}"}
+{"time": "2025-07-25 23:23:04,497", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "31", "message": "[REQUEST BODY] 1753465984.494866-GET-http://localhost:8000/alerts/ body="}
+{"time": "2025-07-25 23:23:04,499", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "28", "message": "[REQUEST] 1753465984.4998462-GET-http://localhost:8000/analytics/risk_trends/ path=/analytics/risk_trends/ query= headers={'host': 'localhost:8000', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'en-US,en;q=0.9'}"}
+{"time": "2025-07-25 23:23:04,501", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "31", "message": "[REQUEST BODY] 1753465984.4998462-GET-http://localhost:8000/analytics/risk_trends/ body="}
+{"time": "2025-07-25 23:23:04,503", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "28", "message": "[REQUEST] 1753465984.5039074-GET-http://localhost:8000/healthz path=/healthz query= headers={'host': 'localhost:8000', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'en-US,en;q=0.9'}"}
+{"time": "2025-07-25 23:23:04,504", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "31", "message": "[REQUEST BODY] 1753465984.5039074-GET-http://localhost:8000/healthz body="}
+{"time": "2025-07-25 23:23:04,506", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "28", "message": "[REQUEST] 1753465984.5068321-GET-http://localhost:8000/analytics/port_performance/ path=/analytics/port_performance/ query= headers={'host': 'localhost:8000', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'en-US,en;q=0.9'}"}
+{"time": "2025-07-25 23:23:04,508", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "31", "message": "[REQUEST BODY] 1753465984.5068321-GET-http://localhost:8000/analytics/port_performance/ body="}
+{"time": "2025-07-25 23:23:04,510", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "12", "message": "Request: GET http://localhost:8000/alerts/"}
+{"time": "2025-07-25 23:23:04,511", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "12", "message": "Request: GET http://localhost:8000/analytics/risk_trends/"}
+{"time": "2025-07-25 23:23:04,513", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "12", "message": "Request: GET http://localhost:8000/healthz"}
+{"time": "2025-07-25 23:23:04,514", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "12", "message": "Request: GET http://localhost:8000/analytics/port_performance/"}
+{"time": "2025-07-25 23:23:04,517", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "16", "message": "Response: 200 GET http://localhost:8000/analytics/kpis/"}
+{"time": "2025-07-25 23:23:08,529", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/alerts?select=%2A&order=id.desc "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:23:10,203", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/risk_trends?select=%2A&order=timestamp.desc "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:23:10,882", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1025", "message": "HTTP Request: GET https://vblsqqpigxxpvzyfegul.supabase.co/rest/v1/port_performance?select=%2A&order=timestamp.desc "HTTP/2 200 OK""}
+{"time": "2025-07-25 23:23:10,885", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "34", "message": "[RESPONSE] 1753465975.422852-GET-http://localhost:8000/analytics/kpis/ status=200"}
+{"time": "2025-07-25 23:23:10,888", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "16", "message": "Response: 200 GET http://localhost:8000/alerts/"}
+{"time": "2025-07-25 23:23:10,891", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "16", "message": "Response: 200 GET http://localhost:8000/analytics/risk_trends/"}
+{"time": "2025-07-25 23:23:10,893", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "16", "message": "Response: 200 GET http://localhost:8000/healthz"}
+{"time": "2025-07-25 23:23:10,895", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "16", "message": "Response: 200 GET http://localhost:8000/analytics/port_performance/"}
+{"time": "2025-07-25 23:23:10,897", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "34", "message": "[RESPONSE] 1753465984.494866-GET-http://localhost:8000/alerts/ status=200"}
+{"time": "2025-07-25 23:23:10,900", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "34", "message": "[RESPONSE] 1753465984.4998462-GET-http://localhost:8000/analytics/risk_trends/ status=200"}
+{"time": "2025-07-25 23:23:10,903", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "34", "message": "[RESPONSE] 1753465984.5039074-GET-http://localhost:8000/healthz status=200"}
+{"time": "2025-07-25 23:23:10,906", "level": "INFO", "module": "middleware", "funcName": "dispatch", "lineno": "34", "message": "[RESPONSE] 1753465984.5068321-GET-http://localhost:8000/analytics/port_performance/ status=200"}
+{"time": "2025-07-25 23:23:28,207", "level": "INFO", "module": "base", "funcName": "run_job", "lineno": "129", "message": "Running job "periodic_disruption_check (trigger: interval[0:10:00], next run at: 2025-07-25 23:33:28 IST)" (scheduled at 2025-07-25 23:23:28.203592+05:30)"}
+{"time": "2025-07-25 23:23:30,209", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1740", "message": "HTTP Request: GET http://api.aviationstack.com/v1/flights?access_key=90a463c4008f5a76cb74863110a7a599&arr_icao=VIDP&limit=5 "HTTP/1.1 429 Too Many Requests""}
+{"time": "2025-07-25 23:23:30,213", "level": "WARNING", "module": "event_monitor", "funcName": "fetch_air_events", "lineno": "175", "message": "AviationStack error: 429 {"error":{"code":"usage_limit_reached","message":"Your monthly usage limit has been reached. Please upgrade your Subscription Plan."}}"}
+{"time": "2025-07-25 23:23:34,430", "level": "INFO", "module": "_client", "funcName": "_send_single_request", "lineno": "1740", "message": "HTTP Request: GET https://api.myshiptracking.com/v1/ships?key=K6dhrB4RApmmjzhdEgW2lMWnHGf1wIJ7YV&country=CN&limit=5 "HTTP/1.1 404 Not Found""}
+{"time": "2025-07-25 23:23:34,433", "level": "WARNING", "module": "event_monitor", "funcName": "fetch_sea_events", "lineno": "216", "message": "MyShipTracking error: 404 <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 - Page Not Found | MyShipTracking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    /* Reset and full height */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    /* Dark blue gradient background */
+    body {
+      background: linear-gradient(135deg, #001f3f, #004080);
+      color: #ffffff;
+      font-family: 'Roboto', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+    }
+    .container {
+      max-width: 500px;
+      width: 100%;
+    }
+    header img {
+      max-width: 100px;
+      width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 4rem;
+      margin: 0;
+      font-weight: 300;
+    }
+    p {
+      font-size: 1.2rem;
+      margin: 20px 0;
+      font-weight: 300;
+      line-height: 1.4;
+    }
+    a {
+      display: inline-block;
+      text-decoration: none;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      padding: 10px 30px;
+      border-radius: 30px;
+      transition: background 0.3s, color 0.3s;
+      font-weight: 300;
+      font-size: 1rem;
+      margin-top: 30px;
+    }
+    a:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .footer {
+      margin-top: 40px;
+      font-size: 0.8rem;
+      font-weight: 300;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="myst.svg" alt="MyShipTracking Logo">
+    </header>
+    <h1>404</h1>
+    <p>Oops, the page you're looking for doesn't exist</p>
+    <a href="/">Back to Home</a>
+    <div class="footer">
+      <p>&copy; 2025 MyShipTracking</p>
+    </div>
+  </div>
+</body>
+</html>
+"}
