@@ -1,5 +1,5 @@
 import os
-from fastapi import APIRouter, Request, Body, HTTPException, Depends
+from fastapi import APIRouter, Request, Body, HTTPException, Depends, WebSocket, WebSocketDisconnect
 from models import ShipmentUpdateRequest, ShipmentUpdateResponse
 from auth import get_current_user_role
 from utils.data_loader import get_latest_gps_position, update_shipment_location_by_gps, get_latest_location_from_provider
@@ -7,6 +7,8 @@ import json
 from typing import Any, Dict, List
 from supabase import create_client
 from dotenv import load_dotenv
+import asyncio
+import random
 
 load_dotenv(dotenv_path=os.path.join("backend", ".env"))
 SUPABASE_URL = os.getenv("SUPABASE_URL")
@@ -126,4 +128,39 @@ async def list_traccar_devices(user=Depends(get_current_user_role("operator"))):
 @shipment_router.get("/shipments/")
 async def list_shipments():
     shipments = supabase.table("shipment").select("*").execute().data
-    return {"shipments": shipments} 
+    return {"shipments": shipments}
+
+@shipment_router.websocket("/ws/shipments/")
+async def websocket_shipments(websocket: WebSocket):
+    await websocket.accept()
+    try:
+        while True:
+            # Fetch all shipments from DB
+            shipments = supabase.table("shipment").select("*").execute().data or []
+            if shipments:
+                # Simulate a random update
+                shipment = random.choice(shipments)
+                shipment["status"] = random.choice(["in-transit", "delayed", "arrived", "loading"])
+                await websocket.send_json({"type": "shipment_update", "shipment": shipment})
+            await asyncio.sleep(5)
+    except WebSocketDisconnect:
+        pass
+
+@shipment_router.websocket("/ws/traccar/")
+async def websocket_traccar(websocket: WebSocket):
+    await websocket.accept()
+    import requests
+    traccar_api = os.getenv("TRACCAR_API", "https://demo.traccar.org/api")
+    traccar_user = os.getenv("TRACCAR_USER")
+    traccar_pass = os.getenv("TRACCAR_PASS")
+    try:
+        while True:
+            try:
+                resp = requests.get(f"{traccar_api}/devices", auth=(traccar_user, traccar_pass))
+                devices = resp.json() if resp.status_code == 200 else []
+                await websocket.send_json({"type": "traccar_update", "devices": devices})
+            except Exception as e:
+                await websocket.send_json({"type": "traccar_error", "error": str(e)})
+            await asyncio.sleep(5)
+    except WebSocketDisconnect:
+        pass 

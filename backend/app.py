@@ -16,6 +16,7 @@ import logging
 from slowapi.extension import Limiter as SlowAPILimiter
 from fastapi import Depends
 from routes.integrations import integrations_router
+from routes.analytics import analytics_router
 
 limiter = Limiter(key_func=get_remote_address, default_limits=["10/minute", "100/hour"])
 app = FastAPI()
@@ -47,6 +48,8 @@ app.include_router(admin_router)
 print("[APP] Admin router included.")
 app.include_router(integrations_router)
 print("[APP] Integrations router included.")
+app.include_router(analytics_router)
+print("[APP] Analytics router included.")
 
 start_scheduler()
 print("[APP] Scheduler started.")

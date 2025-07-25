@@ -1,0 +1,185 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Supply Chain Intelligence Design System
+Maritime-inspired color palette with Space Grotesk typography
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Base colors - Clean white with maritime blue accents */
+    --background: 0 0% 100%;
+    --foreground: 213 27% 19%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 213 27% 19%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 213 27% 19%;
+
+    /* Primary - Maritime blue theme */
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 217 91% 70%;
+
+    /* Secondary - Soft blue-gray */
+    --secondary: 214 32% 91%;
+    --secondary-foreground: 213 27% 19%;
+
+    /* Muted - Light blue-gray tones */
+    --muted: 214 32% 91%;
+    --muted-foreground: 215 16% 47%;
+
+    /* Accent - Cyan highlights */
+    --accent: 191 91% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Status colors */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* UI elements */
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 217 91% 60%;
+
+    --radius: 0.5rem;
+
+    /* Gradients for maritime aesthetic */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-accent: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--primary)));
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--secondary)));
+
+    /* Shadows for depth */
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.15);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.2);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Dark mode - Deep ocean theme */
+    --background: 213 40% 8%;
+    --foreground: 210 40% 98%;
+
+    --card: 213 35% 10%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 213 35% 10%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Primary - Bright blue for dark mode */
+    --primary: 217 91% 65%;
+    --primary-foreground: 213 40% 8%;
+    --primary-glow: 217 91% 75%;
+
+    /* Secondary - Dark blue-gray */
+    --secondary: 213 30% 15%;
+    --secondary-foreground: 210 40% 98%;
+
+    /* Muted - Subtle blue-grays */
+    --muted: 213 30% 15%;
+    --muted-foreground: 215 20% 65%;
+
+    /* Accent - Bright cyan for highlights */
+    --accent: 191 91% 60%;
+    --accent-foreground: 213 40% 8%;
+
+    /* Status colors for dark mode */
+    --success: 142 76% 45%;
+    --success-foreground: 213 40% 8%;
+    --warning: 38 92% 55%;
+    --warning-foreground: 213 40% 8%;
+    --destructive: 0 84% 65%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* UI elements */
+    --border: 213 30% 18%;
+    --input: 213 30% 15%;
+    --ring: 217 91% 65%;
+
+    /* Enhanced gradients for dark mode */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-accent: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--primary)));
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--secondary)));
+
+    /* Enhanced shadows for dark mode */
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.3);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.4);
+
+    --sidebar-background: 213 35% 8%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 217 91% 65%;
+    --sidebar-primary-foreground: 213 40% 8%;
+    --sidebar-accent: 213 30% 12%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 213 30% 15%;
+    --sidebar-ring: 217 91% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+}
+
+@layer components {
+  /* Maritime dashboard components */
+  .dashboard-grid {
+    @apply grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6;
+  }
+  
+  .status-indicator {
+    @apply w-3 h-3 rounded-full animate-pulse;
+  }
+  
+  .status-live {
+    @apply bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)];
+  }
+  
+  .status-simulated {
+    @apply bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)];
+  }
+  
+  .card-maritime {
+    @apply bg-card border border-border rounded-lg shadow-sm hover:shadow-md transition-all duration-200;
+  }
+  
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+  
+  .gradient-accent {
+    background: var(--gradient-accent);
+  }
+  
+  .text-glow {
+    text-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+  }
+}

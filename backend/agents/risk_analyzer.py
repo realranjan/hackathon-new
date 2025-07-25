@@ -65,7 +65,7 @@ def generate_fallback_risk_reports(llm_input):
         "Port Congestion": {"High": "10-14 days", "Medium": "5-7 days", "Low": "2-3 days"},
         "Political Unrest": {"High": "14+ days", "Medium": "7-10 days", "Low": "3-5 days"}
     }
-
+    
     risk_reports = []
 
     for item in llm_input:
@@ -134,7 +134,7 @@ def analyze_risk(disruptions):
     log_agent("analyze_risk_called", disruptions=disruptions)
     if not isinstance(disruptions, list):
         disruptions = [disruptions]
-
+    
     try:
         inventory = load_inventory()
         vendors = load_vendors()

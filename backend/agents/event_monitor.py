@@ -251,46 +251,7 @@ async def fetch_or_simulate_events():
             events.extend(road_events)
     except Exception as e:
         logging.error(f"Road fetch failed: {e}")
-    if not events:
-        logging.info("No real events found, using simulation.")
-        # --- Dynamic simulation logic ---
-        try:
-            # Load inventory from Supabase to get possible locations
-            shipments = supabase.table("shipment").select("*").execute().data
-            locations = set()
-            for item in shipments:
-                if 'route' in item and item['route']:
-                    locations.update(item['route'])
-                if 'shipping_origin' in item and item['shipping_origin']:
-                    locations.add(item['shipping_origin'])
-                if 'destination' in item and item['destination']:
-                    locations.add(item['destination'])
-                if 'legs' in item and item['legs']:
-                    for leg in item['legs']:
-                        for key in ['origin', 'destination', 'current_location']:
-                            val = leg.get(key)
-                            if val:
-                                locations.add(val)
-            locations = list(locations)
-        except Exception as e:
-            logging.error(f"Failed to load inventory for simulation: {e}")
-            locations = ["Bangalore", "Chennai", "Mumbai", "Delhi", "Pune", "Hyderabad", "Kolkata"]
-        # Define possible event types
-        event_types = ["Strike", "Flood", "Protest", "Port Congestion", "Political Unrest", "Weather"]
-        # Randomly select location and event type
-        import random
-        sim_location = random.choice(locations) if locations else "Bangalore"
-        sim_event_type = random.choice(event_types)
-        event_payload = {
-            "location": sim_location,
-            "event_type": sim_event_type,
-            "severity": random.choice(["High", "Medium", "Low"]),
-            "timestamp": datetime.datetime.utcnow().isoformat(),
-            "source": "Simulated",
-            "mode": "road",
-            "data_source": "simulated"
-        }
-        return [event_payload]
+    # Remove simulation fallback: only return real events
     return events
 
 def fetch_or_simulate_events_sync():

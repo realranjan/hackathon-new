@@ -52,5 +52,5 @@ python-dateutil
 pytz
 watchdog
 
-# For authentication and user management
+# For authentication and user management 
 # (see backend/README.md for MySQL setup) 
